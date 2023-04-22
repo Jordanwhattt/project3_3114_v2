@@ -1,17 +1,17 @@
 package prj3;
 
-public class BST {
+public class BST_2 {
     
     public Node root;
     public String type;
     
-    public BST() {
+    public BST_2() {
         root = null;
         this.type = "y";
     }
     
     
-    public BST(String type) {
+    public BST_2(String type) {
         root = null;
         this.type = type;
     }
