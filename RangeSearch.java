@@ -25,6 +25,7 @@ public class RangeSearch {
     public Point[] Px;
     public Point[] Py;
     public Point[] Pz;
+    public Node root;
     private int n;
     RangeTree tree;
 
@@ -62,9 +63,13 @@ public class RangeSearch {
         for(int i = 0; i < n; i++) {
             Pz[i] = new Point(points[i][0], points[i][1],points[i][2]);
         }
-
+        
         BST x_tree = new BST("x");
-        Node root = x_tree.buildTree(Px);
+        BST y_tree = new BST("x");
+        RangeTree xy_tree = new RangeTree("x");
+        x_tree.root = x_tree.buildTree(Px);
+        y_tree.root = y_tree.buildTree(Px);
+        xy_tree.root = xy_tree.buildTree(Px, Py);
 
     }
         
@@ -99,17 +104,17 @@ public class RangeSearch {
     }
 
 
-/**
- * Sorts the points Matrix based on "0" = "x".
- * "1" = "Y"
- * "2" = "Z"
- * 
- * @param coords
- * @param n
- * @param sortBy
- * @return
- */
-public int[][] sortPointsBy(int[][] coords, int n,  String sortBy) {
+    /**
+     * Sorts the points Matrix based on "0" = "x".
+     * "1" = "Y"
+     * "2" = "Z"
+     * 
+     * @param coords
+     * @param n
+     * @param sortBy
+     * @return
+     */
+    public int[][] sortPointsBy(int[][] coords, int n,  String sortBy) {
 
         if(sortBy == "x") {
             Arrays.sort(coords, Comparator.comparingDouble(o -> o[0]));
@@ -123,5 +128,11 @@ public int[][] sortPointsBy(int[][] coords, int n,  String sortBy) {
 
         return coords; 
     }
+    
+    
+    
+    
+    
+    
 
 }
