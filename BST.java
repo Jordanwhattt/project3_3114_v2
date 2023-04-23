@@ -5,21 +5,26 @@ import java.util.Arrays;
 public class BST {
     
     public Node root;
-    public String type;
+    public int type;
     
     //1D Range Tree
     public BST() {
         root = null;
-        this.type = "y";
+        this.type = 1;
     }
     
     
-    public BST(String type) {
+    public BST(int type) {
         root = null;
         this.type = type;
     }
     
-    
+    /**
+     * 
+     * @param points
+     * @param type: x = 0, y = 1, z = 2
+     * @return
+     */
     public Node buildTree(Point[] points) {
         int n = points.length;
         

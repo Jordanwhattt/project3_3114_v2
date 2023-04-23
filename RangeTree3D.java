@@ -23,16 +23,22 @@ public class RangeTree3D {
     public Node buildTree(Point[] points_x, Point[] points_y, Point[] points_z) {
         int n = points_x.length;
         
-        //1. Build a binary search tree for based on P_y
-        BST tree_x = new BST("x");
-        RangeTree2D tree_2d = new RangeTree2D("y");
+        //1. Build a binary search tree for based on P_x
+        BST tree_x = new BST(0);
+        tree_x.root = tree_x.buildTree(points_x);
+        // build a 2d Range Tree for y and z
+        RangeTree2D tree_2d = new RangeTree2D(1);
+        tree_2d.root = tree_2d.buildTree(points_y, points_z);
         
         //2. if P contains only one point
         if(n == 1) {
-            Node v = new Node(points_x[0], tree_x); //Creates leaf node storing this point and make it 
+            Node v = new Node(points_x[0], tree_x, tree_2d); //Creates leaf node storing this point and make it 
             Point[] pyArray = new Point[1];
+            Point[] pzArray = new Point[1];
             pyArray[0] = points_x[0];
+            pzArray[0] = points_x[0];
             v.setPy(pyArray);
+            v.setPz(pzArray);
             return v;
         }
         
@@ -63,43 +69,39 @@ public class RangeTree3D {
 
         py_left = new Point[px_left.length];
         py_right = new Point[px_right.length];
-        //pz_left = new Point[px_left.length];
-        //pz_right = new Point[px_right.length];
+        pz_left = new Point[px_left.length];
+        pz_right = new Point[px_right.length];
             
 
         int left_index = 0, right_index = 0;
         // Then subsets <= and > the median x-coordinate x_mid
-        for (Point p : points_y) {
-            if (p.getX() <= points_x[median_index-1].getX()) {
-                py_left[left_index] = p;
+        for (int i = 0; i < n; i++) {
+            Point py = points_y[i];
+            Point pz = points_z[i];
+            if (py.getX() <= points_x[median_index-1].getX()) {
+                py_left[left_index] = py;
+                pz_left[left_index] = pz;
                 left_index++;
+                
             }
             else {
-                py_right[right_index] = p;
+                py_right[right_index] = py;
+                pz_right[right_index] = pz;
                 right_index++;
             }
         }
         
-        for (Point p : points_z) {
-            if (p.getX() <= points_x[median_index-1].getX()) {
-                py_left[left_index] = p;
-                left_index++;
-            }
-            else {
-                py_right[right_index] = p;
-                right_index++;
-            }
-        }
 
 
         
-        Node v = new Node(points_x[median_index-1], tree);
+        Node v = new Node(points_x[median_index-1], tree_x, tree_2d);
         v.setPy(points_y);
+        v.setPy(points_z);
 
         //5. build v_left
-        Node v_left = this.buildTree(px_left, py_left);
+        Node v_left = this.buildTree(px_left, py_left, pz_left);
         //6. build v_right
-        Node v_right = this.buildTree(px_right, py_right);
+        Node v_right = this.buildTree(px_right, py_right, pz_right);
         
         //Make v_left the left child of v
         v.left = v_left;

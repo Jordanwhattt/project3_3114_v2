@@ -5,15 +5,15 @@ import java.util.Arrays;
 public class RangeTree2D {
     
     public Node root;
-    public String type;
+    public int type;
     
     public RangeTree2D() {
         root = null;
-        this.type = "y";
+        this.type = 1;
     }
     
     
-    public RangeTree2D(String type) {
+    public RangeTree2D(int type) {
         root = null;
         this.type = type;
     }
@@ -24,12 +24,13 @@ public class RangeTree2D {
         
         //1. Build a binary search tree for based on P_y
         
-        BST y_tree = new BST("y");
-        y_tree.root = y_tree.buildTree(points_y);
+        
+        BST tree = new BST(this.type % 3); //Sort Tree on y points
+        tree.root = tree.buildTree(points_y);
         
         //2. if P contains only one point
         if(n == 1) {
-            Node v = new Node(points_x[0], y_tree); //Creates leaf node storing this point and make it 
+            Node v = new Node(points_x[0], tree); //Creates leaf node storing this point and make it 
             Point[] pyArray = new Point[1];
             pyArray[0] = points_x[0];
             v.setPy(pyArray);
@@ -72,7 +73,25 @@ public class RangeTree2D {
         int left_index = 0, right_index = 0;
         // Then subsets <= and > the median x-coordinate x_mid
         for (Point p : points_y) {
-            if (p.getX() <= points_x[median_index-1].getX()) {
+            int p_value;
+            int median_val;
+            // 
+            if(type == 0) {
+                p_value = p.getX();
+                median_val = points_x[median_index-1].getX();
+            } else if(type == 1) {
+                p_value = p.getY();
+                median_val = points_x[median_index-1].getY();
+            } else if(type == 2){
+                p_value = p.getZ();
+                median_val = points_x[median_index-1].getZ();
+            } else {
+                return null; //type must be 0, 1, or 2.
+            }
+            
+            
+            //Split
+            if (p_value <= median_val) {
                 py_left[left_index] = p;
                 left_index++;
             }
@@ -84,7 +103,7 @@ public class RangeTree2D {
 
 
         
-        Node v = new Node(points_x[median_index-1], y_tree);
+        Node v = new Node(points_x[median_index-1], tree);
         v.setPy(points_y);
 
         //5. build v_left
