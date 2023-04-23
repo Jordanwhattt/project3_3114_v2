@@ -27,7 +27,7 @@ public class RangeSearch {
     public Point[] Pz;
     public Node root;
     private int n;
-    RangeTree tree;
+    RangeTree2D tree;
 
     /**
      * The constructor of the class
@@ -37,38 +37,43 @@ public class RangeSearch {
      *            i-th point has x coordinate points[i-1][0], y coordinate
      *            points[i-1][1], and z coordinate points[i-1][2]
      */
+
     public RangeSearch(int[][] points) {
         this.points = points;
         this.n = this.points.length; 
         
-        Px = new Point[n];
-        Py = new Point[n];
-        Pz = new Point[n];
-        points = sortPointsBy(points, n, "x");
+        Px = new Point[n]; // Array of Points. We will sort this by the x cooridnates. All the points will have the same entries but in different orders
+        Py = new Point[n]; // Array of Points. We will sort this by the y cooridnates.
+        Pz = new Point[n]; // Array of Points. We will sort this by the z cooridnates.
         
-        for(int i = 0; i < n; i++) {
+        //Sorts by the x coordinates.
+        points = sortPointsBy(points, n, "x");
+        for(int i = 0; i < n; i++) { //Adds "Point" elements to Px. 
             Px[i] = new Point(points[i][0], points[i][1],points[i][2]);
         }
         
-        //Sort X y and Z Point arrays
-        
+        //Sort Y Array
         points = sortPointsBy(points, n, "y");
-        
         for(int i = 0; i < n; i++) {
             Py[i] = new Point(points[i][0], points[i][1],points[i][2]);
         }
         
+        //Sorts Z Array
         points = sortPointsBy(points, n, "z");
-        
         for(int i = 0; i < n; i++) {
             Pz[i] = new Point(points[i][0], points[i][1],points[i][2]);
         }
         
+        //1-D Trees
         BST x_tree = new BST("x");
-        BST y_tree = new BST("x");
-        RangeTree xy_tree = new RangeTree("x");
+        BST y_tree = new BST("y");
+        BST z_tree = new BST("z");
         x_tree.root = x_tree.buildTree(Px);
-        y_tree.root = y_tree.buildTree(Px);
+        y_tree.root = y_tree.buildTree(Py);
+        z_tree.root = z_tree.buildTree(Pz);
+        
+        //2-D Range Tree
+        RangeTree2D xy_tree = new RangeTree2D("x");
         xy_tree.root = xy_tree.buildTree(Px, Py);
 
     }

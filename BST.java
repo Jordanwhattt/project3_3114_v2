@@ -7,6 +7,7 @@ public class BST {
     public Node root;
     public String type;
     
+    //1D Range Tree
     public BST() {
         root = null;
         this.type = "y";
@@ -58,6 +59,52 @@ public class BST {
         v.right = v_right;    
         return v;
         
+    }
+    
+    
+    /**
+     * query does not work yet. This should also be in 
+     * @param min
+     * @param max
+     * @return
+     */
+    public int RangeQuery1D(int min, int max) {
+        Node v_split = findSplitNode(min, max);
+        int x = v_split.point.getX();
+        int count = 0;
+
+        if(v_split.isLeaf()) {
+            if(x >= min & x <= max) {
+                count++; 
+            } 
+        } 
+        else {
+            Node v = v_split.left;
+            while(!v.isLeaf()) {
+                if(min <= v.point.getX()) {
+                    //TODO reportSubtree(v.right);
+                    v = v.left;
+                }
+                else {
+                    v = v.right;
+                }
+             }
+        }
+        return count;
+    }
+    
+    
+    public Node findSplitNode(int min, int max) {
+        Node v = this.root;
+        
+        while(!v.isLeaf() & (max <= v.point.getX() | min > v.point.getX())) {
+            if(max <= v.point.getX()) {
+                v = v.left;
+            } else {
+                v = v.right;
+            }
+        }
+        return v;
     }
     
 }
