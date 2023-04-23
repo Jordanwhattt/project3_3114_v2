@@ -4,8 +4,8 @@ package prj3;
 public class Node {
     public Point point;
     public Point[] py;
-    public BST first_tree;
-    public RangeTree2D second_tree;
+    public BST tree1D;
+    public RangeTree2D tree2D;
     public Node left, right;
     
     
@@ -13,15 +13,25 @@ public class Node {
         this.point = point;
         left = right = null;
         this.py = null;
-        this.first_tree = null;
+        this.tree1D = null;
+        this.tree2D = null;
     }
     
     
-    public Node(Point point, BST first_tree) {
+    public Node(Point point, BST tree1D) {
         this.point = point;
         left = right = null;
         this.py = null;
-        this.first_tree = first_tree;
+        this.tree1D = tree1D;
+        this.tree2D = null;
+    }
+    
+    public Node(Point point, BST tree1D, RangeTree2D tree2D) {
+        this.point = point;
+        left = right = null;
+        this.py = null;
+        this.tree1D = tree1D;
+        this.tree2D = tree2D;
     }
     
     public boolean isLeaf() {
