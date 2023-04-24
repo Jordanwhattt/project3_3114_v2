@@ -76,13 +76,13 @@ public class RangeTree2D {
             int p_value;
             int median_val;
             // 
-            if(type == 0) {
+            if(this.type == 0) {
                 p_value = p.getX();
                 median_val = points_x[median_index-1].getX();
-            } else if(type == 1) {
+            } else if(this.type == 1) {
                 p_value = p.getY();
                 median_val = points_x[median_index-1].getY();
-            } else if(type == 2){
+            } else if(this.type == 2){
                 p_value = p.getZ();
                 median_val = points_x[median_index-1].getZ();
             } else {

@@ -37,6 +37,14 @@ public class Node {
         this.tree1D = tree1D;
         this.tree2D = tree2D;
     }
+    public Node(Point point , RangeTree2D tree2D) {
+        this.point = point;
+        left = right = null;
+        this.py = null;
+        this.pz = null;
+        this.tree1D = null;
+        this.tree2D = tree2D;
+    }
     
     public boolean isLeaf() {
         if(left == null & right == null) {

@@ -6,15 +6,15 @@ public class RangeTree3D {
     
     
     public Node root;
-    public String type;
+    public int type;
     
     public RangeTree3D() {
         root = null;
-        this.type = "y";
+        this.type = 0;
     }
     
     
-    public RangeTree3D(String type) {
+    public RangeTree3D(int type) {
         root = null;
         this.type = type;
     }
@@ -23,16 +23,17 @@ public class RangeTree3D {
     public Node buildTree(Point[] points_x, Point[] points_y, Point[] points_z) {
         int n = points_x.length;
         
-        //1. Build a binary search tree for based on P_x
-        BST tree_x = new BST(0);
-        tree_x.root = tree_x.buildTree(points_x);
+        
+        
+
         // build a 2d Range Tree for y and z
+        
         RangeTree2D tree_2d = new RangeTree2D(1);
         tree_2d.root = tree_2d.buildTree(points_y, points_z);
         
         //2. if P contains only one point
         if(n == 1) {
-            Node v = new Node(points_x[0], tree_x, tree_2d); //Creates leaf node storing this point and make it 
+            Node v = new Node(points_x[0], tree_2d); //Creates leaf node storing this point and make it 
             Point[] pyArray = new Point[1];
             Point[] pzArray = new Point[1];
             pyArray[0] = points_x[0];
@@ -57,14 +58,10 @@ public class RangeTree3D {
 
         // Split P into P_left and P_right.
         
-        if(n % 2 == 0) { // This is 
-            px_left = Arrays.copyOfRange(points_x, 0, median_index);
-            px_right = Arrays.copyOfRange(points_x, median_index, n);
-        }
-        else {
-            px_left = Arrays.copyOfRange(points_x, 0, median_index);
-            px_right = Arrays.copyOfRange(points_x, median_index, n);
-        }
+       
+        px_left = Arrays.copyOfRange(points_x, 0, median_index);
+        px_right = Arrays.copyOfRange(points_x, median_index, n);
+        
         
 
         py_left = new Point[px_left.length];
@@ -73,28 +70,57 @@ public class RangeTree3D {
         pz_right = new Point[px_right.length];
             
 
-        int left_index = 0, right_index = 0;
+        int left_index1 = 0, right_index1 = 0, right_index2 = 0, left_index2 = 0;
         // Then subsets <= and > the median x-coordinate x_mid
         for (int i = 0; i < n; i++) {
+            int py_value;
+            int pz_value;
+            int median_val;
+            
             Point py = points_y[i];
             Point pz = points_z[i];
-            if (py.getX() <= points_x[median_index-1].getX()) {
-                py_left[left_index] = py;
-                pz_left[left_index] = pz;
-                left_index++;
-                
+            
+            if(this.type == 0) {
+                py_value = py.getX();
+                pz_value = pz.getX();
+                median_val = points_x[median_index-1].getX();
+            } else if(this.type == 1) {
+                py_value = py.getY();
+                pz_value = pz.getY();
+                median_val = points_x[median_index-1].getY();
+            } else if(this.type == 2){
+                py_value = py.getZ();
+                pz_value = pz.getZ();
+                median_val = points_x[median_index-1].getZ();
+            } else {
+                return null; //type must be 0, 1, or 2.
+            }
+            
+            
+            //Split
+            if (py_value <= median_val) {
+                py_left[left_index1] = py;
+                left_index1++;
             }
             else {
-                py_right[right_index] = py;
-                pz_right[right_index] = pz;
-                right_index++;
+                py_right[right_index1] = py;
+                right_index1++;
+            }
+            
+            if (pz_value <= median_val) {
+                pz_left[left_index2] = pz;
+                left_index2++;
+            }
+            else {
+                pz_right[right_index2] = pz;
+                right_index2++;
             }
         }
         
 
 
         
-        Node v = new Node(points_x[median_index-1], tree_x, tree_2d);
+        Node v = new Node(points_x[median_index-1], tree_2d);
         v.setPy(points_y);
         v.setPy(points_z);
 

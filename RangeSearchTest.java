@@ -62,7 +62,10 @@ public class RangeSearchTest {
         }
         return new Input(nodes, queries, output);
     }
+    
 
+    
+    
     @Test
     public void test1() {
         Input input = readFile("tests/test1.in", "tests/test1.out");
@@ -134,7 +137,7 @@ public class RangeSearchTest {
         }
     }
     
-    
+
 
     class Input {
         public int[][] nodes;
