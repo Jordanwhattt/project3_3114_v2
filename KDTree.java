@@ -31,6 +31,7 @@ public class KDTree {
         Point[] right;
         
         int median_index = l / 2;
+        //If this tree is not correct, this is what is wrong with it. Choosing the median correctly.
         if(l % 2 == 1) {
             left = Arrays.copyOfRange(point, 0, median_index + 1);
             right = Arrays.copyOfRange(point, median_index + 1, l);
