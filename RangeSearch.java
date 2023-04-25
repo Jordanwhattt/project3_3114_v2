@@ -110,7 +110,7 @@ public class RangeSearch {
         Point plow = new Point(xMin, yMin, zMin);
         Point phigh = new Point(xMax, yMax, zMax);
         Prism queryRange= new Prism(plow, phigh);
-        Prism R = new Prism(plow, phigh);
+        Prism bounding_box = new Prism(plow, phigh); //???????? IDK how to get this
         kdtree.rangeCount(queryRange, kdtree.root, bounding_box);
         return -1;
         
