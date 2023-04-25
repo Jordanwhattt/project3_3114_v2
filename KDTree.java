@@ -131,7 +131,7 @@ public class KDTree {
         }
         
         
-        Node v = new Node(point[median_index-1]);
+        Node v = new Node(point[median_index-1], depth);
 
         v.depth++; //add depth to the node
         v.left = buildTree(left, depth + 1); // left child of root
