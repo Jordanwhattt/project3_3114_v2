@@ -28,7 +28,7 @@ public class RangeSearch {
     BST x_tree;
     public Node root;
     private int n;
-    RangeTree2D tree;
+    public KDTree kdtree;
 
     /**
      * The constructor of the class
@@ -74,7 +74,7 @@ public class RangeSearch {
         y_tree.root = y_tree.buildTree(Py);
         z_tree.root = z_tree.buildTree(Pz);
         
-        KDTree kdtree = new KDTree();
+        kdtree = new KDTree();
         kdtree.root = kdtree.buildTree(Px, 0);
         
 
@@ -109,8 +109,9 @@ public class RangeSearch {
         
         Point plow = new Point(xMin, yMin, zMin);
         Point phigh = new Point(xMax, yMax, zMax);
-        Prism queryRectangle = new Prism(plow, phigh);
-        
+        Prism queryRange= new Prism(plow, phigh);
+        Prism R = new Prism(plow, phigh);
+        kdtree.rangeCount(queryRange, kdtree.root, bounding_box);
         return -1;
         
     }

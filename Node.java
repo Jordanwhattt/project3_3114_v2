@@ -15,6 +15,13 @@ public class Node {
         this.depth = 0;
     }
     
+    public Node(Point point, int depth) {
+        this.point = point;
+        left = right = null;
+        this.py = null;
+        this.depth = depth;
+    }
+    
     
     public boolean isLeaf() {
         if(left == null & right == null) {
