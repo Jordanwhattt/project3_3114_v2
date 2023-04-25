@@ -6,7 +6,7 @@ public class Node {
     public Point[] py;
     public Point[] pz;
     public Node left, right;
-    public int count;
+    public int depth;
     
     
     public Node(Point point) {
@@ -14,7 +14,7 @@ public class Node {
         left = right = null;
         this.py = null;
         this.pz = null;
-        this.count = 0;
+        this.depth = 0;
     }
     
     

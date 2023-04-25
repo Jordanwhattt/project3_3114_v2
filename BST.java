@@ -43,14 +43,9 @@ public class BST {
         int median_index = n / 2;
         
         
-        if(n % 2 == 0) { // This is 
-            p_left = Arrays.copyOfRange(points, 0, median_index);
-            p_right = Arrays.copyOfRange(points, median_index, n);
-        }
-        else {
-            p_left = Arrays.copyOfRange(points, 0, median_index);
-            p_right = Arrays.copyOfRange(points, median_index, n);
-        }
+        p_left = Arrays.copyOfRange(points, 0, median_index);
+        p_right = Arrays.copyOfRange(points, median_index, n);
+
 
         Node v = new Node(points[median_index-1]);
         v.setPy(points);

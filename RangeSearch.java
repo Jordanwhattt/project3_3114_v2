@@ -73,6 +73,10 @@ public class RangeSearch {
         this.query(6, 13, 99, 99, 99, 99);
         y_tree.root = y_tree.buildTree(Py);
         z_tree.root = z_tree.buildTree(Pz);
+        
+        KDTree kdtree = new KDTree();
+        kdtree.root = kdtree.buildTree(Px, 0);
+        
 
     }
         
