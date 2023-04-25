@@ -6,11 +6,13 @@ public class BST {
     
     public Node root;
     public int type;
+    public int count;
     
     //1D Range Tree
     public BST() {
         root = null;
         this.type = 1;
+        this.count = 0;
     }
     
     
@@ -73,36 +75,79 @@ public class BST {
      * @param max
      * @return
      */
-    public int RangeQuery1D(int min, int max) {
-        Node v_split = findSplitNode(min, max);
-        int x = v_split.point.getX();
-        int count = 0;
-
-        if(v_split.isLeaf()) {
-            if(x >= min & x <= max) {
-                count++; 
-            } 
-        } 
-        else {
+    public int RangeQuery1D(int min, int max, int type) {
+        
+        Node v_split = findSplitNode(this, min, max);
+        int split_value;
+        int v_value;
+        if(v_split.isLeaf()) { //Base Case 1
+            
+            split_value = returnSplitValue(v_split, type);
+            
+            if(split_value >= min & split_value <= max) {
+                report(v_split.point); 
+            }
+            
+        } else { //Case 2: Not a leaf
             Node v = v_split.left;
+            v_value = returnSplitValue(v, type);
+            
             while(!v.isLeaf()) {
-                if(min <= v.point.getX()) {
-                    //TODO reportSubtree(v.right);
+                v_value = returnSplitValue(v, type);
+                if(min <= v_value) {
+                    reportSubtree(v.right, min, max);
                     v = v.left;
                 }
                 else {
                     v = v.right;
                 }
-             }
+            }
+            
+            if(v_value >= min & v_value <= max) {
+                report(v.point);
+            }
+            
+            
+            v = v_split.right;
+            while(!v.isLeaf()) {
+                split_value = returnSplitValue(v, type);
+                
+                if(max >= split_value) {
+                    reportSubtree(v.left, min, max);
+                    v = v.right;
+                } 
+                else {
+                    v = v.left;
+                }
+            }
+            if(v_value >= min & v_value <= max) {
+                report(v.point);
+            }
         }
+        
         return count;
+    
     }
     
     
-    public Node findSplitNode(int min, int max) {
+    private int returnSplitValue(Node v_split, int type2) {
+        int split_value;
+        if(type == 0 % 3) {
+            split_value = v_split.point.getX();
+        }
+        else if(type == 1 % 3) {
+            split_value = v_split.point.getY();
+        }
+        else  {
+            split_value = v_split.point.getZ();
+        }
+        return split_value;
+    }
+
+
+    public Node findSplitNode(BST tree, int min, int max) {
         Node v = this.root;
-        
-        while(!v.isLeaf() & (max <= v.point.getX() | min > v.point.getX())) {
+        while(!v.isLeaf() & (max <= v.point.getX() | min >= v.point.getX())) {
             if(max <= v.point.getX()) {
                 v = v.left;
             } else {
@@ -112,4 +157,21 @@ public class BST {
         return v;
     }
     
+    
+    public void report(Point p) {
+        count++;
+    }
+    
+    
+    
+    public void reportSubtree(Node v, int min, int max) {
+        if(v.isLeaf()) {
+            if(v.point.getX() >= min & v.point.getX() <= max) {
+                report(v.point);
+            }
+        } else {
+            reportSubtree(v.left, min, max);
+            reportSubtree(v.right, min, max);
+        }
+    }
 }

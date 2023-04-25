@@ -25,6 +25,7 @@ public class RangeSearch {
     public Point[] Px;
     public Point[] Py;
     public Point[] Pz;
+    BST x_tree;
     public Node root;
     private int n;
     RangeTree2D tree;
@@ -65,20 +66,13 @@ public class RangeSearch {
         }
         
         //1-D Trees
-        BST x_tree = new BST(0); //Sorted by x coordinates
+        x_tree = new BST(0); //Sorted by x coordinates
         BST y_tree = new BST(1);
         BST z_tree = new BST(2);
         x_tree.root = x_tree.buildTree(Px); //Builds a 1-d Binary search tree sorted by the X coordinates
+        this.query(6, 13, 99, 99, 99, 99);
         y_tree.root = y_tree.buildTree(Py);
         z_tree.root = z_tree.buildTree(Pz);
-        
-        //2-D Range Tree
-        RangeTree2D xy_tree = new RangeTree2D(0);
-        xy_tree.root = xy_tree.buildTree(Px, Py);
-        
-        //3-D Range Tree
-        RangeTree3D xyz_tree = new RangeTree3D();
-        xyz_tree.root = xyz_tree.buildTree(Px, Py, Pz);
 
     }
         
@@ -108,8 +102,10 @@ public class RangeSearch {
         int yMax,
         int zMin,
         int zMax) {
-        // TODO complete
-        return -1;
+        
+        int type = 0;
+        int count = x_tree.RangeQuery1D(xMin, xMax, type);
+        return count;
     }
 
 
