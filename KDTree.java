@@ -32,13 +32,10 @@ public class KDTree {
         
         int median_index = l / 2;
         //If this tree is not correct, this is what is wrong with it. Choosing the median correctly.
-        if(l % 2 == 1) {
-            left = Arrays.copyOfRange(point, 0, median_index + 1);
-            right = Arrays.copyOfRange(point, median_index + 1, l);
-        } else {
-            left = Arrays.copyOfRange(point, 0, median_index);
-            right = Arrays.copyOfRange(point, median_index, l);
-        }
+        
+        left = Arrays.copyOfRange(point, 0, median_index);
+        right = Arrays.copyOfRange(point, median_index, l);
+        
             
 
         
@@ -134,7 +131,7 @@ public class KDTree {
         }
         
         
-        Node v = new Node(point[median_index]);
+        Node v = new Node(point[median_index-1]);
 
         v.depth++; //add depth to the node
         v.left = buildTree(left, depth + 1); // left child of root
@@ -150,9 +147,6 @@ public class KDTree {
      */
     private Point getMedian(Point[] coords_arr) {
         int n = coords_arr.length;
-        if(n % 2 == 1) {
-            return coords_arr[n / 2]; 
-        }
         return coords_arr[(n / 2) - 1]; 
     }
     
