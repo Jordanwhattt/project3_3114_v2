@@ -107,9 +107,12 @@ public class RangeSearch {
         int zMin,
         int zMax) {
         
-        int type = 0;
-        int count = x_tree.RangeQuery1D(xMin, xMax, type);
-        return count;
+        Point plow = new Point(xMin, yMin, zMin);
+        Point phigh = new Point(xMax, yMax, zMax);
+        Prism queryRectangle = new Prism(plow, phigh);
+        
+        return -1;
+        
     }
 
 

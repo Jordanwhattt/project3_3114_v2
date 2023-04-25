@@ -7,9 +7,11 @@ public class KDTree {
 
     
     Node root;
+    int count;
     
     public KDTree() {
         root = null;
+        count = 0;
     }
 
     public Node buildTree(Point[] point, int depth) {
@@ -29,9 +31,14 @@ public class KDTree {
         Point[] right;
         
         int median_index = l / 2;
-        
-        left = Arrays.copyOfRange(point, 0, median_index);
-        right = Arrays.copyOfRange(point, median_index, l);
+        if(l % 2 == 1) {
+            left = Arrays.copyOfRange(point, 0, median_index + 1);
+            right = Arrays.copyOfRange(point, median_index + 1, l);
+        } else {
+            left = Arrays.copyOfRange(point, 0, median_index);
+            right = Arrays.copyOfRange(point, median_index, l);
+        }
+            
 
         
         // Sorting by x-axis
@@ -52,7 +59,7 @@ public class KDTree {
             for(int i = 0; i < l; i++) {
                 // If x-coord of point is less than or equal to median,
                 // add it to the left array.
-                if(point[i].getX() < median.getX()) {
+                if(point[i].getX() <= median.getX()) {
                     left[left_ind] = point[i];
                     left_ind++;
                 }
@@ -81,7 +88,7 @@ public class KDTree {
             for(int i = 0; i < l; i++) {
                 // If y-coord of point is less than or equal to median,
                 // add it to the left array.
-                if(point[i].getY() < median.getY()) {
+                if(point[i].getY() <= median.getY()) {
                     left[left_ind] = point[i];
                     left_ind++;
                 }
@@ -112,7 +119,7 @@ public class KDTree {
             for(int i = 0; i < l; i++) {
                 // If z-coord of point is less than or equal to median,
                 // add it to the left array.
-                if(point[i].getZ() < median.getZ()) {
+                if(point[i].getZ() <= median.getZ()) {
                     left[left_ind] = point[i];
                     left_ind++;
                 }
@@ -142,7 +149,10 @@ public class KDTree {
      */
     private Point getMedian(Point[] coords_arr) {
         int n = coords_arr.length;
-        return coords_arr[n / 2]; 
+        if(n % 2 == 1) {
+            return coords_arr[n / 2]; 
+        }
+        return coords_arr[(n / 2) - 1]; 
     }
     
     /**
@@ -212,6 +222,40 @@ public class KDTree {
       }
     
     
+    
+    public int rangeCount(Prism R, Node v, Prism cell) {
+        if(v == null) {
+            return 0;
+        }
+        else if(R.isDisjoint(cell)) {
+            return 0;
+        }
+        else if(R.contains(cell)) {
+            return v.py.length;
+        }
+        else {
+            int count = 0;
+            if(R.contains(cell)) {
+                count += 1;
+            }
+            
+            count += rangeCount(R, v.left, cell.leftPart(v.depth, v.point));
+            count += rangeCount(R, v.left, cell.leftPart(v.depth, v.point));
+            return count;
+        }
+        
+        
+    }
+
+    
+    public void reportSubtree(Node v, Prism range) {
+        if(v.isLeaf()) {
+            
+        } else {
+            reportSubtree(v.left, range);
+            reportSubtree(v.right, range);
+        }
+    }
 
     
 }

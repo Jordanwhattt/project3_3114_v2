@@ -48,7 +48,7 @@ public class BST {
 
 
         Node v = new Node(points[median_index-1]);
-        v.setPy(points);
+        //v.setPy(points);
 
         //5. build v_left
         Node v_left = this.buildTree(p_left);
@@ -80,7 +80,7 @@ public class BST {
             split_value = returnSplitValue(v_split, type);
             
             if(split_value >= min & split_value <= max) {
-                report(v_split.point); 
+                count++; //Report point
             }
             
         } else { //Case 2: Not a leaf
@@ -99,7 +99,7 @@ public class BST {
             }
             
             if(v_value >= min & v_value <= max) {
-                report(v.point);
+                count++; //Report point
             }
             
             
@@ -116,7 +116,7 @@ public class BST {
                 }
             }
             if(v_value >= min & v_value <= max) {
-                report(v.point);
+                count++; //Report point
             }
         }
         
@@ -152,17 +152,13 @@ public class BST {
         return v;
     }
     
-    
-    public void report(Point p) {
-        count++;
-    }
-    
+
     
     
     public void reportSubtree(Node v, int min, int max) {
         if(v.isLeaf()) {
             if(v.point.getX() >= min & v.point.getX() <= max) {
-                report(v.point);
+                count++; //Report point
             }
         } else {
             reportSubtree(v.left, min, max);

@@ -4,7 +4,6 @@ package prj3;
 public class Node {
     public Point point;
     public Point[] py;
-    public Point[] pz;
     public Node left, right;
     public int depth;
     
@@ -13,7 +12,6 @@ public class Node {
         this.point = point;
         left = right = null;
         this.py = null;
-        this.pz = null;
         this.depth = 0;
     }
     
@@ -25,11 +23,4 @@ public class Node {
         return false;
     }
     
-    public void setPy(Point[] py) {
-        this.py = py;
-    }
-    
-    public void setPz(Point[] pz) {
-        this.pz = pz;
-    }
 }
