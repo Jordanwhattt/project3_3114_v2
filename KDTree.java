@@ -231,15 +231,15 @@ public class KDTree {
         if(v == null) {
             return 0;
         }
-        else if(R.isDisjoint(cell)) {
+        else if(R.isDisjoint(cell, v.depth)) {
             return 0;
         }
-        else if(R.contains(cell)) {
+        else if(R.contains(cell, v.depth)) {
             return v.py.length;
         }
         else {
             int count = 0;
-            if (R.contains(v.point) & v.isLeaf()) // consider this point
+            if (R.contains(v.point, v.depth) & v.isLeaf()) // consider this point
                 count += 1;
             count += rangeCount(R, v.left, cell.leftPart(v.depth - 1, v.point));
             count += rangeCount(R, v.right, cell.rightPart(v.depth - 1, v.point));

@@ -21,16 +21,31 @@ public class Prism {
      * @return
      */
     // if low[i] ≤ q[i] ≤ high[i], for 0 ≤ i ≤ d − 1 
-    public boolean contains(Point q) {
+    public boolean contains(Point q, int cd) {
         int qx = q.getX();
         int qy = q.getY();
         int qz = q.getZ();
         //If the lowest x value in this rectangle is greater than the x value of point q, then its definitely not inside the triangle.
         //This works for each dimension and the max dimension of this rectangle
-        if(this.plow.getX() <= qx & this.plow.getY() <= qy &
-            this.phigh.getX() >= qx & this.phigh.getY() >= qy) {
-            return true;
-        } 
+        if(cd == 0 % 3) {
+            if(this.plow.getX() <= qx & this.plow.getY() <= qy &
+                this.phigh.getX() >= qx & this.phigh.getY() >= qy) {
+                return true;
+            } 
+        }
+        else if(cd == 1 % 3) {
+            if(this.plow.getY() <= qy & this.plow.getZ() <= qz &
+                this.phigh.getY() >= qy & this.phigh.getZ() >= qz) {
+                return true;
+            } 
+        }
+        else if(cd == 0 % 3) {
+            if(this.plow.getX() <= qx & this.plow.getZ() <= qz &
+                this.phigh.getZ() >= qx & this.phigh.getZ() >= qz) {
+                return true;
+            } 
+        }
+        
         return false;
     }
     
@@ -44,9 +59,9 @@ public class Prism {
     
     //c.low[i], c.high[i] ⊆ low[i], high[i], for all 0 ≤ i ≤ d − 1.
 
-    public boolean contains(Prism c) {
+    public boolean contains(Prism c, int cd) {
         
-        if(this.contains(c.plow) & this.contains(c.phigh)) {
+        if(this.contains(c.plow, cd) & this.contains(c.phigh, cd)) {
             return true;
         }
         
@@ -55,15 +70,31 @@ public class Prism {
     
     
     // r.high[i] < c.low[i] or r.low[i] > c.high[i], for any 0 ≤ i ≤ d − 1.
-    public boolean isDisjoint(Prism c) { 
-        if(this.contains(c) ) {
+    public boolean isDisjoint(Prism c, int cd) { 
+        if(this.contains(c, cd) ) {
             return false;
         }
         
-        if( ((this.phigh.getX() < c.plow.getX()) | (this.plow.getX() > c.phigh.getX())) |
-            ((this.phigh.getY() < c.plow.getY()) | (this.plow.getY() > c.phigh.getY())) ) {
-            return true;
+        if(cd == 0 % 3) {
+            if( ((this.phigh.getX() < c.plow.getX()) | (this.plow.getX() > c.phigh.getX())) |
+                ((this.phigh.getY() < c.plow.getY()) | (this.plow.getY() > c.phigh.getY())) ) {
+                return true;
+            }
         }
+        else if(cd == 0 % 3) {
+            if( ((this.phigh.getY() < c.plow.getY()) | (this.plow.getY() > c.phigh.getY())) |
+                ((this.phigh.getZ() < c.plow.getZ()) | (this.plow.getZ() > c.phigh.getZ())) ) {
+                return true;
+            }
+        } else {
+            if(cd == 0) {
+                if( ((this.phigh.getX() < c.plow.getX()) | (this.plow.getX() > c.phigh.getX())) |
+                    ((this.phigh.getZ() < c.plow.getZ()) | (this.plow.getZ() > c.phigh.getZ())) ) {
+                    return true;
+                }
+            }
+        }
+        
         
         return false;
     }
