@@ -30,4 +30,8 @@ public class Node {
         return false;
     }
     
+    public void setPy(Point[] points) {
+        this.py = points;
+    }
+    
 }

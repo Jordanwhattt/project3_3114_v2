@@ -11,7 +11,7 @@ public class Prism {
     }
     
     public Prism(int xmin, int xmax, int ymin, int ymax, int zmin, int zmax) {
-        this(new Point(xmin, ymin, ymax), new Point(xmax, ymax, zmax));
+        this(new Point(xmin, ymin, zmin), new Point(xmax, ymax, zmax));
     }
     
     /**
@@ -27,8 +27,8 @@ public class Prism {
         int qz = q.getZ();
         //If the lowest x value in this rectangle is greater than the x value of point q, then its definitely not inside the triangle.
         //This works for each dimension and the max dimension of this rectangle
-        if(this.plow.getX() > qx | this.plow.getY() > qy |
-            this.phigh.getX() < qx | this.phigh.getY() < qy) {
+        if(this.plow.getX() <= qx & this.plow.getY() <= qy &
+            this.phigh.getX() >= qx & this.phigh.getY() >= qy) {
             return true;
         } 
         return false;
@@ -60,12 +60,12 @@ public class Prism {
             return false;
         }
         
-        if( ((this.phigh.getX() < c.plow.getX()) | (this.plow.getX() > c.phigh.getX())) &
+        if( ((this.phigh.getX() < c.plow.getX()) | (this.plow.getX() > c.phigh.getX())) |
             ((this.phigh.getY() < c.plow.getY()) | (this.plow.getY() > c.phigh.getY())) ) {
-            return false;
+            return true;
         }
         
-        return true;
+        return false;
     }
     
     
@@ -88,7 +88,7 @@ public class Prism {
         Point new_plow;
         if(cd % 3 == 0) {
             new_plow = new Point(s.getX(), this.phigh.getY(), this.phigh.getZ());
-           return new Prism(new_plow, this.phigh);
+            return new Prism(new_plow, this.phigh);
         } else if( cd % 3 == 1) {
             new_plow = new Point(this.phigh.getX(), s.getY(), this.phigh.getZ());
             return new Prism(new_plow, this.phigh);
