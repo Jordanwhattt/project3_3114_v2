@@ -13,13 +13,14 @@ public class KDTree {
         root = null;
         count = 0;
     }
+    
 
     public Node buildTree(Point[] point, int depth) {
         // Empty Tree, return the new node
         // The node we are currently looking at does not have any children.
         int l = point.length;
         if (l == 1) { 
-            Node v = new Node(point[0]); //Createa leaf node storing this point and make it 
+            Node v = new Node(point[0], depth + 1); //Createa leaf node storing this point and make it 
             v.setPy(point);
             return v;
         }
@@ -28,32 +29,48 @@ public class KDTree {
 
         Point median;
         
-        Point[] left;
-        Point[] right;
-        Point[] x_coord = null;
-        Point[] y_coord = null;
-        Point[] z_coord = null;
+        Point[] x_left;
+        Point[] x_right;
+        Point[] y_left;
+        Point[] y_right;
+        Point[] z_left;
+        Point[] z_right;
+        Point[] p_x = new Point[l];
+        Point[] p_y = new Point[l];
+        Point[] p_z = new Point[l];
         Node v = null;
         int median_index = l / 2;
-        //If this tree is not correct, this is what is wrong with it. Choosing the median correctly.
+
         
-        left = Arrays.copyOfRange(point, 0, median_index);
-        right = Arrays.copyOfRange(point, median_index, l);
+        mergeSort(point, l, axis);
         
+        x_left = Arrays.copyOfRange(point, 0, median_index);
+        x_right = Arrays.copyOfRange(point, median_index, l);
+        
+
+        y_left = Arrays.copyOfRange(point, 0, median_index);
+        y_right = Arrays.copyOfRange(point, median_index, l);
+        
+        
+        z_left = Arrays.copyOfRange(point, 0, median_index);
+        z_right = Arrays.copyOfRange(point, median_index, l);
             
 
         
         // Sorting by x-axis
-        if(axis == 0) {
-            x_coord = new Point[l];
-            for(int i = 0; i < x_coord.length;i++) {
-                x_coord[i] = point[i];
+        if(axis % 3 == 0) {
+
+            for(int i = 0; i < l;i++) {
+                p_x[i] = point[i];
+                p_y[i] = point[i];
+                p_z[i] = point[i];
             }
             
-           
-            //mergeSort(x_coord, l); // Sorts array of points using the merge sort
-            mergeSort(x_coord, l, axis);
-            median = getMedian(x_coord); // Gets median of x-coords
+            mergeSort(p_x, l, axis); //Sort Point Array p_x based on x axis
+            mergeSort(p_y, l, axis + 1); //Sort Point Array p_y by y axis
+            mergeSort(p_z, l, axis + 2); //Sort Point Array p_y by y axis
+            
+            median = getMedian(p_x); // Gets median of x-coords
             
             int left_ind = 0;
             int right_ind = 0;
@@ -61,30 +78,39 @@ public class KDTree {
             for(int i = 0; i < l; i++) {
                 // If x-coord of point is less than or equal to median,
                 // add it to the left array.
-                if(point[i].getX() <= median.getX()) {
-                    left[left_ind] = point[i];
+                if(p_x[i].getX() <= median.getX()) {
+                    x_left[left_ind] = p_x[i];
+                    y_left[left_ind] = p_y[i];
+                    z_left[left_ind] = p_z[i];
                     left_ind++;
                 }
                 // If x-coord of point is greater than median,
                 // add it to the right array.
                 else {
-                    right[right_ind] = point[i];
+                    x_right[right_ind] = p_x[i];
+                    y_right[right_ind] = p_y[i];
+                    z_right[right_ind] = p_z[i];
                     right_ind++;
                 }
             }
-            v = new Node(point[median_index], depth);
-            v.setPy(x_coord);
+            v = new Node(p_x[median_index - 1], depth);
+            v.setPx(p_x);
+            v.setPy(p_y);
+            v.setPy(p_z);
         }
         
         // Sorting by y-axis
-        else if(axis == 1) {
-            y_coord = new Point[l];
-            for(int i = 0; i < y_coord.length;i++) {
-                y_coord[i] = point[i];
+        else if(axis % 3 == 1) {
+            p_y = new Point[l];
+            p_z = new Point[l];
+            for(int i = 0; i <l ;i++) {
+                p_y[i] = point[i];
+                p_z[i] = point[i];
             }
             
-            mergeSort(y_coord, l, axis); // Sorts array of points using the merge sort
-            median = getMedian(y_coord); // Gets median of y-coords
+            mergeSort(p_y, l, axis); // Sorts array of points using the merge sort
+            mergeSort(p_z, l, axis + 1);
+            median = getMedian(p_y); // Gets median of y-coords
             
             int left_ind = 0;
             int right_ind = 0;
@@ -92,32 +118,37 @@ public class KDTree {
             for(int i = 0; i < l; i++) {
                 // If y-coord of point is less than or equal to median,
                 // add it to the left array.
-                if(point[i].getY() <= median.getY()) {
-                    left[left_ind] = point[i];
+                if(p_y[i].getY() <= median.getY()) {
+                    x_left[left_ind] = p_y[i];
+                    y_left[left_ind] = p_z[i];
                     left_ind++;
                 }
                 // If y-coord of point is greater than median,
                 // add it to the right array.
                 else {
-                    right[right_ind] = point[i];
+                    x_right[right_ind] = p_y[i];
+                    y_right[right_ind] = p_z[i];
                     right_ind++;
                 }
             }
-            v = new Node(point[median_index], depth);
-            v.setPy(y_coord);
+            v = new Node(p_y[median_index - 1], depth);
+            v.setPx(p_y);
+            v.setPy(p_z);
         }
         
         // Sorting by z-axis
-        else if(axis == 2) {
-            z_coord = new Point[l];
-            for(int i = 0; i < z_coord.length;i++) {
-                z_coord[i] = point[i];
+        else if(axis % 3 == 2) {
+            p_z = new Point[l];
+            p_x = new Point[l];
+            for(int i = 0; i < l;i++) {
+                p_z[i] = point[i];
+                p_x[i] = point[i];
             }
             
             
-            
-            mergeSort(z_coord, l, axis); //Sorts array of points using the merge sort
-            median = getMedian(z_coord); //Gets median of z-coords
+            mergeSort(p_z, l, axis);
+            mergeSort(p_x, l, axis + 1); //Sorts array of points using the merge sort
+            median = getMedian(p_z); //Gets median of z-coords
             
             int left_ind = 0;
             int right_ind = 0;
@@ -125,26 +156,32 @@ public class KDTree {
             for(int i = 0; i < l; i++) {
                 // If z-coord of point is less than or equal to median,
                 // add it to the left array.
-                if(point[i].getZ() <= median.getZ()) {
-                    left[left_ind] = point[i];
+                if(p_z[i].getZ() <= median.getZ()) {
+                    x_left[left_ind] = p_z[i];
+                    y_left[left_ind] = p_x[i];
                     left_ind++;
                 }
                 // If z-coord of point is greater than median,
                 // add it to the right array.
                 else {
-                    right[right_ind] = point[i];
+                    x_left[right_ind] = p_z[i];
+                    y_left[right_ind] = p_x[i];
                     right_ind++;
                 }
             }
-            v = new Node(point[median_index], depth);
-            v.setPy(z_coord);
+            v = new Node(point[median_index - 1], depth);
+            v.setPx(p_z);
+            v.setPy(p_x);
+        }
+        else {
+            return null;
         }
         
         
         
         v.depth++; //add depth to the node
-        v.left = buildTree(left, depth + 1); // left child of root
-        v.right = buildTree(right, depth + 1);  // right child of root
+        v.left = buildTree(x_left, depth + 1); // left child of root
+        v.right = buildTree(x_right, depth + 1);  // right child of root
         
         return v;
     }
@@ -231,18 +268,18 @@ public class KDTree {
         if(v == null) {
             return 0;
         }
-        else if(R.isDisjoint(cell, v.depth)) {
+        else if(R.isDisjoint(cell) {
             return 0;
         }
-        else if(R.contains(cell, v.depth)) {
+        else if(R.contains(cell) {
             return v.py.length;
         }
         else {
             int count = 0;
-            if (R.contains(v.point, v.depth) & v.isLeaf()) // consider this point
+            if (R.contains(v.point) && v.isLeaf()) // consider this point
                 count += 1;
-            count += rangeCount(R, v.left, cell.leftPart(v.depth - 1, v.point));
-            count += rangeCount(R, v.right, cell.rightPart(v.depth - 1, v.point));
+            count += rangeCount(R, v.left, cell.leftPart(v.depth, v.point));
+            count += rangeCount(R, v.right, cell.rightPart(v.depth, v.point));
             return count;
         }
         

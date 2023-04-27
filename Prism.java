@@ -21,12 +21,23 @@ public class Prism {
      * @return
      */
     // if low[i] ≤ q[i] ≤ high[i], for 0 ≤ i ≤ d − 1 
-    public boolean contains(Point q, int cd) {
+    public boolean contains(Point q , int cd  ) {
         int qx = q.getX();
         int qy = q.getY();
         int qz = q.getZ();
         //If the lowest x value in this rectangle is greater than the x value of point q, then its definitely not inside the triangle.
         //This works for each dimension and the max dimension of this rectangle
+        
+        
+        
+//        if(this.plow.getX() <= qx & this.plow.getY() <= qy & this.plow.getZ() <= qz &
+//            this.phigh.getX() >= qx & this.phigh.getY() >= qy & this.phigh.getZ() >= qz) {
+//            return true;
+//        }
+//        
+        
+        
+
         if(cd == 0 % 3) {
             if(this.plow.getX() <= qx & this.plow.getY() <= qy &
                 this.phigh.getX() >= qx & this.phigh.getY() >= qy) {
@@ -70,11 +81,18 @@ public class Prism {
     
     
     // r.high[i] < c.low[i] or r.low[i] > c.high[i], for any 0 ≤ i ≤ d − 1.
-    public boolean isDisjoint(Prism c, int cd) { 
+    public boolean isDisjoint(Prism c ,int cd ) { 
         if(this.contains(c, cd) ) {
             return false;
         }
         
+        if( ((this.phigh.getX() < c.plow.getX()) || (this.plow.getX() > c.phigh.getX())) ||
+            ((this.phigh.getY() < c.plow.getY()) || (this.plow.getY() > c.phigh.getY())) || 
+            ((this.phigh.getZ() < c.plow.getZ()) || (this.plow.getZ() > c.phigh.getZ())) ) {
+            return true;
+        }
+        
+      
         if(cd == 0 % 3) {
             if( ((this.phigh.getX() < c.plow.getX()) | (this.plow.getX() > c.phigh.getX())) |
                 ((this.phigh.getY() < c.plow.getY()) | (this.plow.getY() > c.phigh.getY())) ) {
