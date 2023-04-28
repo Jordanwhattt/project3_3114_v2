@@ -283,7 +283,7 @@ public class KDTreev2 {
             }
         }
 
-        if((v.depth % 3 == 1 || v.depth % 3 == 2 ) && !v.isLeaf()) {
+        if(v.depth % 3 == 1 && !v.isLeaf()) {
             if(range.plow != null && range.plow.y < v.point.y) {
                 qc += searchKdTree(v.left, range);
             }
@@ -291,15 +291,15 @@ public class KDTreev2 {
                 qc += searchKdTree(v.right, range);
             }
         }
-//        if(v.depth % 3 == 2) {
-//            if(range.plow != null && range.plow.z <= v.point.z) {
-//                qc += searchKdTree(v.left, range);
-//            }
-//            if(range.phigh != null && range.phigh.z > v.point.z) {
-//                qc += searchKdTree(v.right, range);
-//            }
-//        }
-//        
+        if(v.depth % 3 == 2 && !v.isLeaf()) {
+            if(range.plow != null && range.plow.z < v.point.z) {
+                qc += searchKdTree(v.left, range);
+            }
+            if(range.phigh != null && range.phigh.z > v.point.z) {
+                qc += searchKdTree(v.right, range);
+            }
+        }
+        
         
 
         return qc;
