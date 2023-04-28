@@ -44,31 +44,14 @@ public class KDTreev2 {
         }
         if(n == 1) {
             Node v = new Node(new Point(px[0].x, px[0].y, px[0].z), depth); 
-            v.setP(px);
+            v.setPx(px);
+            v.setPy(py);
+            v.setPz(pz);
             return v;
            
             
         }
-//        if(n == 2) {
-//            Node v;
-//            if(axis == 0) {
-//                v = new Node(new Point(px[1].x, px[1].y, px[1].z), depth);
-//                v.left = new Node(new Point(py[0].x, py[0].y, py[0].z), depth+1);
-//                v.right = new Node(v.point, depth+1);
-//            }
-//            else if(axis == 1 ) {
-//                v = new Node(new Point(py[1].x, py[1].y, py[1].z), depth);
-//                v.left = new Node(new Point(pz[0].x, pz[0].y, pz[0].z), depth+1);
-//                v.right = new Node(v.point, depth+1);
-//            }
-//            else {
-//                v = new Node(new Point(pz[1].x, pz[1].y, pz[1].z), depth);
-//                v.left = new Node(new Point(px[0].x, px[0].y, px[0].z), depth+1);
-//                v.right = new Node(v.point, depth+1);
-//            }
-//            return v;
-//            
-//        }
+
         
 
         int l_length = 0;
@@ -94,7 +77,9 @@ public class KDTreev2 {
         if(axis == 0) {
 
             Node v = new Node(new Point(px[mid_i].x, px[mid_i].y, px[mid_i].z), depth);
-            v.setP(px);
+            v.setPx(px);
+            v.setPy(py);
+            v.setPz(pz);
             int xleft_index = 0;
             int xright_index = 0;
             int yleft_index = 0;
@@ -141,6 +126,9 @@ public class KDTreev2 {
         else if(axis == 1) {
 
             Node v = new Node(new Point(py[mid_i].x, py[mid_i].y, py[mid_i].z), depth);
+            v.setPx(px);
+            v.setPy(py);
+            v.setPz(pz);
             
             int xleft_index = 0; 
             int zleft_index = 0;
@@ -176,7 +164,7 @@ public class KDTreev2 {
                     zright_index++;
                 }
             }
-            v.setP(py);
+
             v.left = buildTree(x_left, y_left, z_left, depth + 1);
             v.right = buildTree(x_right, y_right, z_right, depth + 1);
             return v;
@@ -184,7 +172,9 @@ public class KDTreev2 {
         else {
             
             Node v = new Node(new Point(pz[mid_i].x, pz[mid_i].y, pz[mid_i].z), depth);
-            
+            v.setPx(px);
+            v.setPy(py);
+            v.setPz(pz);
             int xleft_index = 0; 
             int yleft_index = 0;
             int xright_index = 0;
@@ -218,7 +208,7 @@ public class KDTreev2 {
                     zright_index++;
                 }
             }
-            v.setP(pz);
+
             v.left = buildTree(x_left, y_left, z_left, depth + 1);
             v.right = buildTree(x_right, y_right, z_right, depth + 1);
             return v;
@@ -231,66 +221,7 @@ public class KDTreev2 {
     
     
     
-    public static void mergeSort(Point[] a, int n, int dimension) {
-        if (n < 2) {
-            return;
-        }
-        int mid = n / 2;
-        Point[] l = new Point[mid];
-        Point[] r = new Point[n - mid];
-
-        for (int i = 0; i < mid; i++) {
-            l[i] = a[i];
-        }
-        for (int i = mid; i < n; i++) {
-            r[i - mid] = a[i];
-        }
-        mergeSort(l, mid, dimension);
-        mergeSort(r, n - mid, dimension);
-
-        merge(a, l, r, mid, n - mid, dimension);
-    }
-    
-    /**
-     * Merges the sub-arrays in a sorted manner
-     * 
-     * @return
-     */
-    public static void merge(
-        Point[] a, Point[] l, Point[] r, int left, int right, int dimension) {
-       
-          int i = 0, j = 0, k = 0;
-          while (i < left && j < right) {
-              int l_val;
-              int r_val;
-              
-              
-              if(dimension % 3 == 0 ) {
-                  l_val = l[i].getX();
-                  r_val = r[j].getX();
-              } else if(dimension % 3 == 1) {
-                  l_val = l[i].getY();
-                  r_val = r[j].getY();
-              } else {
-                  l_val = l[i].getZ();
-                  r_val = r[j].getZ();
-              }
-              
-              
-              if (l_val <= r_val) {
-                  a[k++] = l[i++];
-              }
-              else {
-                  a[k++] = r[j++];
-              }
-          }
-          while (i < left) {
-              a[k++] = l[i++];
-          }
-          while (j < right) {
-              a[k++] = r[j++];
-          }
-      }
+   
     
     /**
      * Gets the median of the array
@@ -303,58 +234,114 @@ public class KDTreev2 {
     }
     
     
-    public int rangeCount(Prism R, Node v, Prism cell) {
-        if(v == null) {
-            return 0;
-        }
-        else if(R.isDisjoint(cell, v.depth)) {
-            return 0;
-        }
-        else if(R.contains(cell, v.depth)) {
-            return v.p.length;
-        }
-        else {
-            int count = 0;
-            if (R.contains(v.point, count) && v.isLeaf()) // consider this point
-                count += 1;
-            count += rangeCount(R, v.left, cell.leftPart(v.depth + 1, v.point));
-            count += rangeCount(R, v.right, cell.rightPart(v.depth + 1, v.point));
-            return count;
-        }
-        
-        
-    }
+//    public int rangeCount(Prism R, Node v, Prism cell) {
+//        if(v == null) {
+//            return 0;
+//        }
+//        else if(R.isDisjoint(cell, v.depth)) {
+//            return 0;
+//        }
+//        else if(R.contains(cell, v.depth)) {
+//            return v.px.length;
+//        }
+//        else {
+//            int count = 0;
+//            if (R.contains(v.point, count) && v.isLeaf()) // consider this point
+//                count += 1;
+//            count += rangeCount(R, v.left, cell.leftPart(v.depth + 1, v.point));
+//            count += rangeCount(R, v.right, cell.rightPart(v.depth + 1, v.point));
+//            return count;
+//        }
+//        
+//        
+//    }
     
     
     
     public int searchKdTree(Node v, Prism range) {
-        query_count = 0;
-        if(v.isLeaf()) {
-            return query_count++;
+        int qc=0;
+        //If range is not in the region of this node.
+        //
+        if(!range.intersects(v.point)) {
+            return 0;
         }
-        if(range.contains(v.left.point, this.root.depth++)) {
-            return query_count += v.p.length;
+        else if(range.contains(region(v), v.depth)){
+            return v.px.length;
         }
-        //todo
-//        else if(range.intersects(v.left.point, this.root.depth++)) {
-//            searchKdTree(v.left, range);
-//        }
-        if(range.contains(v.right.point, this.root.depth++)) {
-            return query_count += v.p.length;
-        }
-        //todo
-//        else if(range.intersects(v.right.point, this.root.depth++)) {
-//            searchKdTree(v.right, range);
-//        }
-        return query_count;
-    }
-    
-    
-    
-    
-    
-    public void reportSubtree(Node v, Prism range) {
         
+        if(range.contains(v.point, v.depth)) {
+            qc++;
+        }
+        
+        if(v.depth % 3 == 0 && !v.isLeaf()) {
+            
+            if(range.plow != null && range.plow.x < v.point.x) {
+                qc += searchKdTree(v.left, range);
+            }
+            if(range.phigh != null && range.phigh.x > v.point.x) {
+                qc += searchKdTree(v.right, range);
+            }
+        }
+
+        if((v.depth % 3 == 1 || v.depth % 3 == 2 ) && !v.isLeaf()) {
+            if(range.plow != null && range.plow.y < v.point.y) {
+                qc += searchKdTree(v.left, range);
+            }
+            if(range.phigh != null && range.phigh.y > v.point.y) {
+                qc += searchKdTree(v.right, range);
+            }
+        }
+//        if(v.depth % 3 == 2) {
+//            if(range.plow != null && range.plow.z <= v.point.z) {
+//                qc += searchKdTree(v.left, range);
+//            }
+//            if(range.phigh != null && range.phigh.z > v.point.z) {
+//                qc += searchKdTree(v.right, range);
+//            }
+//        }
+//        
+        
+
+        return qc;
+        
+//        if (v.isLeaf()) {
+//            if (range.contains(v.point, v.depth) && !v.visited) {
+//                v.visited = true;
+//                return query_count++;
+//            }
+//            return 0;
+//        }
+//        else {
+//            v.visited = true;
+//            if (range.contains(region(v.left), v.depth++)) {
+//                return query_count += v.left.px.length;//report subtreee. 
+//                //The length of the points array tells us how many leaves are in that subtree
+//            }
+//            // todo
+//            else if (range.intersects(v.left.point)) {
+//                query_count += searchKdTree(v.left, range);
+//            }
+//            // todo
+//            if (range.contains(region(v.right), v.depth++)) {
+//                return query_count += v.right.px.length; //report subtreee. 
+//                //The length of the points array tells us how many leaves are in that subtree
+//            }
+//            // todo
+//            else if (range.intersects(v.right.point)) {
+//                query_count += searchKdTree(v.right, range);
+//            }
+
+//        }
     }
+    
+    
+    
+    public Prism region(Node p) {
+        int n = p.px.length;
+        Point min_point = new Point(p.px[0].x, p.py[0].y, p.pz[0].z);
+        Point max_point = new Point(p.px[n - 1].x, p.py[n - 1].y, p.pz[n- 1].z);
+        return new Prism(min_point, max_point);
+    }
+
     
 }

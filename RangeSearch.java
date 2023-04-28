@@ -109,13 +109,7 @@ public class RangeSearch {
         Point plow = new Point(xMin, yMin, zMin);
         Point phigh = new Point(xMax, yMax, zMax);
         Prism queryRange = new Prism(plow, phigh);
-
-        Point min_point = new Point(Px[0].getX(), Py[0].getY(), Pz[0].getZ());
-        Point max_point = new Point(Px[n - 1].getX(), Py[n - 1].getY(), Pz[n
-            - 1].getZ());
-
-        Prism bounding_box = new Prism(min_point, max_point); // ???????? IDK
-                                                              // how to get this
+                                                           // how to get this
         return kdtree1.searchKdTree(kdtree1.root, queryRange);
         
     }

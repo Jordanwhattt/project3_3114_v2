@@ -4,21 +4,25 @@ package prj3;
 public class Node {
     public Point point;
     public int depth;
-    public Prism range;
-    public Point[] p;
+    public boolean visited;
+    public Point[] px;
+    public Point[] py;
+    public Point[] pz;
     public Node left, right;
     
     
     public Node(Point point) {
         this.point = point;
         left = right = null;
-        this.p = null;
+        this.px = this.py = null;
+        this.visited = false;
         depth = 0;
     }
     public Node(Point point, int depth) {
         this.point = point;
         left = right = null;
-        this.p = null;
+        this.px = this.py = null;
+        this.visited = false;
         this.depth = depth;
     }
     
@@ -30,10 +34,19 @@ public class Node {
         return false;
     }
     
-    public void setP(Point[] points) {
-        this.p = points;
+    public void setPx(Point[] points) {
+        this.px = points;
     }
     
+    
+    public void setPy(Point[] points) {
+        this.py = points;
+    }
+    
+    
+    public void setPz(Point[] points) {
+        this.pz = points;
+    }
     
 
 }

@@ -1,8 +1,8 @@
 package prj3;
 
 public class Prism {
-    private Point plow; //Lower Left Corner
-    private Point phigh;
+    public Point plow; //Lower Left Corner
+    public Point phigh;
     
     
     public Prism(Point plow, Point phigh) {
@@ -21,36 +21,36 @@ public class Prism {
      * @return
      */
     // if low[i] ≤ q[i] ≤ high[i], for 0 ≤ i ≤ d − 1 
-    public boolean contains(Point q , int cd  ) {
-        int qx = q.getX();
-        int qy = q.getY();
-        int qz = q.getZ();
+    public boolean contains(Point q , int cd ) {
+        int qx = q.x;
+        int qy = q.y;
+        int qz = q.z;
         //If the lowest x value in this rectangle is greater than the x value of point q, then its definitely not inside the triangle.
         //This works for each dimension and the max dimension of this rectangle  
     
-//        if(this.plow.getX() <= qx & this.plow.getY() <= qy & this.plow.getZ() <= qz &
-//            this.phigh.getX() >= qx & this.phigh.getY() >= qy & this.phigh.getZ() >= qz) {
-//            return true;
-//        }
+        if(this.plow.x <= qx & this.plow.y <= qy & this.plow.z <= qz &
+            this.phigh.x >= qx & this.phigh.y >= qy & this.phigh.z >= qz) {
+            return true;
+        }
         
-        if(cd % 3 == 0) {
-            if(this.plow.getX() <= qx && this.plow.getY() <= qy &&
-                this.phigh.getX() >= qx & this.phigh.getY() >= qy) {
-                return true;
-            } 
-        }
-        else if(cd % 3 == 1) {
-            if(this.plow.getY() <= qy && this.plow.getZ() <= qz &&
-                this.phigh.getY() >= qy && this.phigh.getZ() >= qz) {
-                return true;
-            } 
-        }
-        else if(cd % 3 == 2) {
-            if(this.plow.getX() <= qx && this.plow.getZ() <= qz &&
-                this.phigh.getZ() >= qx && this.phigh.getZ() >= qz) {
-                return true;
-            } 
-        }
+//        if(cd % 3 == 0) {
+//            if(this.plow.x <= qx && this.plow.y <= qy &&
+//                this.phigh.x >= qx & this.phigh.y >= qy) {
+//                return true;
+//            } 
+//        }
+//        else if(cd % 3 == 1) {
+//            if(this.plow.y <= qy && this.plow.z <= qz &&
+//                this.phigh.y >= qy && this.phigh.z >= qz) {
+//                return true;
+//            } 
+//        }
+//        else if(cd % 3 == 2) {
+//            if(this.plow.x <= qx && this.plow.z <= qz &&
+//                this.phigh.z >= qx && this.phigh.z >= qz) {
+//                return true;
+//            } 
+//        }
         
         return false;
     }
@@ -81,32 +81,32 @@ public class Prism {
             return false;
         }
         
-//        if( ((this.phigh.getX() < c.plow.getX()) || (this.plow.getX() > c.phigh.getX())) ||
-//            ((this.phigh.getY() < c.plow.getY()) || (this.plow.getY() > c.phigh.getY())) || 
-//            ((this.phigh.getZ() < c.plow.getZ()) || (this.plow.getZ() > c.phigh.getZ())) ) {
-//            return true;
-//        }
+        if( ((this.phigh.x < c.plow.x) || (this.plow.x > c.phigh.x)) ||
+            ((this.phigh.y < c.plow.y) || (this.plow.y > c.phigh.y)) || 
+            ((this.phigh.z < c.plow.z) || (this.plow.z > c.phigh.z)) ) {
+            return true;
+        }
         
       
-        if(cd % 3 == 0) {
-            if( ((this.phigh.getX() < c.plow.getX()) || (this.plow.getX() > c.phigh.getX())) ||
-                ((this.phigh.getY() < c.plow.getY()) || (this.plow.getY() > c.phigh.getY())) ) {
-                return true;
-            }
-        }
-        else if(cd % 3 == 1) {
-            if( ((this.phigh.getY() < c.plow.getY()) || (this.plow.getY() > c.phigh.getY())) ||
-                ((this.phigh.getZ() < c.plow.getZ()) || (this.plow.getZ() > c.phigh.getZ())) ) {
-                return true;
-            }
-        } else {
-            if(cd % 3 == 2) {
-                if( ((this.phigh.getX() < c.plow.getX()) || (this.plow.getX() > c.phigh.getX())) ||
-                    ((this.phigh.getZ() < c.plow.getZ()) || (this.plow.getZ() > c.phigh.getZ())) ) {
-                    return true;
-                }
-            }
-        }
+//        if(cd % 3 == 0) {
+//            if( ((this.phigh.x < c.plow.x) || (this.plow.x > c.phigh.x)) ||
+//                ((this.phigh.y < c.plow.y) || (this.plow.y > c.phigh.y)) ) {
+//                return true;
+//            }
+//        }
+//        else if(cd % 3 == 1) {
+//            if( ((this.phigh.y < c.plow.y) || (this.plow.y > c.phigh.y)) ||
+//                ((this.phigh.z < c.plow.z) || (this.plow.z > c.phigh.z)) ) {
+//                return true;
+//            }
+//        } else {
+//            if(cd % 3 == 2) {
+//                if( ((this.phigh.x < c.plow.x) || (this.plow.x > c.phigh.x)) ||
+//                    ((this.phigh.z < c.plow.z) || (this.plow.z > c.phigh.z)) ) {
+//                    return true;
+//                }
+//            }
+//        }
         
         
         return false;
@@ -116,13 +116,13 @@ public class Prism {
     public Prism leftPart(int cd, Point s) {
         Point new_phigh;
         if(cd % 3 == 0) {
-           new_phigh = new Point(s.getX(), this.phigh.getY(), this.phigh.getZ());
+           new_phigh = new Point(s.x, this.phigh.y, this.phigh.z);
            return new Prism(this.plow, new_phigh);
         } else if( cd % 3 == 1) {
-            new_phigh = new Point(this.phigh.getX(), s.getY(), this.phigh.getZ());
+            new_phigh = new Point(this.phigh.x, s.y, this.phigh.z);
             return new Prism(this.plow, new_phigh);
         } else {
-            new_phigh = new Point(this.phigh.getX(), this.phigh.getY(), s.getZ());
+            new_phigh = new Point(this.phigh.x, this.phigh.y, s.z);
             return new Prism(this.plow, new_phigh);
         }
     }
@@ -131,16 +131,27 @@ public class Prism {
     public Prism rightPart(int cd, Point s) {
         Point new_plow;
         if(cd % 3 == 0) {
-            new_plow = new Point(s.getX(), this.phigh.getY(), this.phigh.getZ());
+            new_plow = new Point(s.x, this.phigh.y, this.phigh.z);
             return new Prism(new_plow, this.phigh);
         } else if( cd % 3 == 1) {
-            new_plow = new Point(this.phigh.getX(), s.getY(), this.phigh.getZ());
+            new_plow = new Point(this.phigh.x, s.y, this.phigh.y);
             return new Prism(new_plow, this.phigh);
         } else {
-            new_plow = new Point(this.phigh.getX(), this.phigh.getY(), s.getZ());
+            new_plow = new Point(this.phigh.x, this.phigh.y, s.z);
             return new Prism(new_plow, this.phigh);
         }
     }
 
-   
+    public boolean intersects(Point p ) {
+        if((this.plow.x <= p.x && p.x <= this.phigh.x )||
+            (this.plow.y <= p.y && p.y <= this.phigh.y ) ||
+            (this.plow.z <= p.z && p.z <= this.phigh.z )) {
+            return true;
+        }
+        return false;
+        
+    }
+    
+    
+    
 }
