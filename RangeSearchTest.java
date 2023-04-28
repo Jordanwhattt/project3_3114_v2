@@ -136,6 +136,58 @@ public class RangeSearchTest {
                 input.queries[i][4], input.queries[i][5]));
         }
     }
+
+    @Test
+    public void test10() {
+        Input input = readFile("tests/test10.in", "tests/test10.out");
+        RangeSearch rs = new RangeSearch(input.nodes);
+        for (int i = 0; i < input.queries.length; i++) {
+            assertEquals(input.output[i], rs.query(input.queries[i][0],
+                input.queries[i][1], input.queries[i][2], input.queries[i][3],
+                input.queries[i][4], input.queries[i][5]));
+        }
+    }
+    @Test
+    public void test11() {
+        Input input = readFile("tests/test11.in", "tests/test11.out");
+        RangeSearch rs = new RangeSearch(input.nodes);
+        for (int i = 0; i < input.queries.length; i++) {
+            assertEquals(input.output[i], rs.query(input.queries[i][0],
+                input.queries[i][1], input.queries[i][2], input.queries[i][3],
+                input.queries[i][4], input.queries[i][5]));
+        }
+    }
+    @Test
+    public void test12() {
+        Input input = readFile("tests/test12.in", "tests/test12.out");
+        RangeSearch rs = new RangeSearch(input.nodes);
+        for (int i = 0; i < input.queries.length; i++) {
+            assertEquals(input.output[i], rs.query(input.queries[i][0],
+                input.queries[i][1], input.queries[i][2], input.queries[i][3],
+                input.queries[i][4], input.queries[i][5]));
+        }
+    }
+    @Test
+    public void test13() {
+        Input input = readFile("tests/test13.in", "tests/test13.out");
+        RangeSearch rs = new RangeSearch(input.nodes);
+        for (int i = 0; i < input.queries.length; i++) {
+            assertEquals(input.output[i], rs.query(input.queries[i][0],
+                input.queries[i][1], input.queries[i][2], input.queries[i][3],
+                input.queries[i][4], input.queries[i][5]));
+        }
+    }
+    @Test
+    public void test14() {
+        Input input = readFile("tests/test14.in", "tests/test14.out");
+        RangeSearch rs = new RangeSearch(input.nodes);
+        for (int i = 0; i < input.queries.length; i++) {
+            assertEquals(input.output[i], rs.query(input.queries[i][0],
+                input.queries[i][1], input.queries[i][2], input.queries[i][3],
+                input.queries[i][4], input.queries[i][5]));
+        }
+    }
+    
     
 
 

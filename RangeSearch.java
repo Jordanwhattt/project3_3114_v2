@@ -28,7 +28,7 @@ public class RangeSearch {
     BST x_tree;
     public Node root;
     private int n;
-    public KDTree kdtree;
+    public KDTreev2 kdtree1;
 
     /**
      * The constructor of the class
@@ -76,7 +76,7 @@ public class RangeSearch {
         y_tree.root = y_tree.buildTree(Py);
         z_tree.root = z_tree.buildTree(Pz);
         
-        KDTreev2 kdtree1 = new KDTreev2(Px);
+        kdtree1 = new KDTreev2(Px);
     }
         
         
@@ -105,17 +105,18 @@ public class RangeSearch {
         int yMax,
         int zMin,
         int zMax) {
-        return -1;
-//        Point plow = new Point(xMin, yMin, zMin);
-//        Point phigh = new Point(xMax, yMax, zMax);
-//        Prism queryRange= new Prism(plow, phigh);
-//        
-//        Point min_point = new Point(Px[0].getX(), Py[0].getY(), Pz[0].getZ());
-//        Point max_point = new Point(Px[n-1].getX(), Py[n-1].getY(), Pz[n-1].getZ());
-//        
-//        Prism bounding_box = new Prism(min_point, max_point); //???????? IDK how to get this
-//        return kdtree.rangeCount(queryRange, kdtree.root, bounding_box);
-         
+        
+        Point plow = new Point(xMin, yMin, zMin);
+        Point phigh = new Point(xMax, yMax, zMax);
+        Prism queryRange = new Prism(plow, phigh);
+
+        Point min_point = new Point(Px[0].getX(), Py[0].getY(), Pz[0].getZ());
+        Point max_point = new Point(Px[n - 1].getX(), Py[n - 1].getY(), Pz[n
+            - 1].getZ());
+
+        Prism bounding_box = new Prism(min_point, max_point); // ???????? IDK
+                                                              // how to get this
+        return kdtree1.rangeCount(queryRange, kdtree1.root, bounding_box);
         
     }
 

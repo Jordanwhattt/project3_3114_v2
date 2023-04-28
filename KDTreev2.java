@@ -42,38 +42,60 @@ public class KDTreev2 {
             return null;
         }
         if(n == 1) {
-            if(axis == 0 ) {
-                return new Node(new Point(px[0].x, px[0].y, px[0].z));
-            }
-            else if(axis == 1 ) {
-                return new Node(new Point(py[0].x, py[0].y, py[0].z));
-            }
-            else {
-                return new Node(new Point(pz[0].x, pz[0].y, pz[0].z));
-            }
+            Node v = new Node(new Point(px[0].x, px[0].y, px[0].z), depth); 
+            v.setP(px);
+            return v;
+           
             
         }
+//        if(n == 2) {
+//            Node v;
+//            if(axis == 0) {
+//                v = new Node(new Point(px[1].x, px[1].y, px[1].z), depth);
+//                v.left = new Node(new Point(py[0].x, py[0].y, py[0].z), depth+1);
+//                v.right = new Node(v.point, depth+1);
+//            }
+//            else if(axis == 1 ) {
+//                v = new Node(new Point(py[1].x, py[1].y, py[1].z), depth);
+//                v.left = new Node(new Point(pz[0].x, pz[0].y, pz[0].z), depth+1);
+//                v.right = new Node(v.point, depth+1);
+//            }
+//            else {
+//                v = new Node(new Point(pz[1].x, pz[1].y, pz[1].z), depth);
+//                v.left = new Node(new Point(px[0].x, px[0].y, px[0].z), depth+1);
+//                v.right = new Node(v.point, depth+1);
+//            }
+//            return v;
+//            
+//        }
         
-        int mid = n/2;
 
-        Point[] x_left = Arrays.copyOfRange(px, 0, mid);
-        Point[] x_right = Arrays.copyOfRange(px, mid+1, n);
+        int l_length = 0;
+        int mid_i =0;
+        if(n % 2 == 0) {
+            l_length = n / 2;
+            mid_i = l_length - 1;
+        }
+        else {
+            mid_i = n/2;
+            l_length = mid_i + 1;
+        }
         
-        Point[] y_left = Arrays.copyOfRange(py, 0, mid);
-        Point[] y_right = Arrays.copyOfRange(py, mid+1, n);
+        Point[] x_left = new Point[l_length];
+        Point[] x_right = new Point[n - l_length];
         
-        Point[] z_left = Arrays.copyOfRange(pz, 0, mid);
-        Point[] z_right = Arrays.copyOfRange(pz, mid+1, n);
-
-        //sort arrays
-        mergeSort(px, n, 0);
-        mergeSort(py, n, 1);
-        mergeSort(pz, n, 2);
+        Point[] y_left = new Point[l_length];
+        Point[] y_right = new Point[n - l_length];
+        
+        Point[] z_left = new Point[l_length];
+        Point[] z_right = new Point[n - l_length];
         
         if(axis == 0) {
 
-            Node v = new Node(new Point(px[mid].x, px[mid].y, px[mid].z));
-          
+            Node v = new Node(new Point(px[mid_i].x, px[mid_i].y, px[mid_i].z), depth);
+            v.setP(px);
+            int xleft_index = 0;
+            int xright_index = 0;
             int yleft_index = 0;
             int zleft_index = 0;
             int yright_index = 0;
@@ -81,38 +103,33 @@ public class KDTreev2 {
             
             for(int i = 0; i < px.length; i++) {
                 
-//                if(v.point.x > px[i].x) {
-//                    x_left[xleft_index] = px[i];
-//                    xleft_index++;
-//                } else {
-//                    x_right[xright_index] = px[i];
-//                    xright_index++;
-//                }
+                if(v.point.x >= px[i].x) {
+                    x_left[xleft_index] = px[i];
+                    xleft_index++;
+                } else {
+                    x_right[xright_index] = px[i];
+                    xright_index++;
+                }
            
-                if(v.point.x > py[i].x) {
+                if(v.point.x >= py[i].x) {
                     y_left[yleft_index] = py[i];
                     yleft_index++;
                     
-                } else if (v.point.x < py[i].x)  {
+                } else  {
                     y_right[yright_index] = py[i];
                     yright_index++;
                 }
                 
-                if(v.point.x > pz[i].x) {
+                if(v.point.x >= pz[i].x) {
                     z_left[zleft_index] = pz[i];
                     zleft_index++;
-                } else if (v.point.x < pz[i].x){
+                } else {
                     z_right[zright_index] = pz[i];
                     zright_index++;
                 }
                     
             }
-            mergeSort(x_left, x_left.length, 0);
-            mergeSort(x_right, x_right.length, 0);
-            mergeSort(y_left, y_left.length, 1);
-            mergeSort(y_right, y_right.length, 1);            
-            mergeSort(z_left, z_left.length, 2);
-            mergeSort(z_right, z_right.length, 2);
+
             
             v.left = buildTree(x_left, y_left, z_left, depth + 1);
             v.right = buildTree(x_right, y_right, z_right, depth + 1);
@@ -122,92 +139,85 @@ public class KDTreev2 {
         }
         else if(axis == 1) {
 
-            Node v = new Node(new Point(py[mid].x, py[mid].y, py[mid].z));
+            Node v = new Node(new Point(py[mid_i].x, py[mid_i].y, py[mid_i].z), depth);
             
             int xleft_index = 0; 
             int zleft_index = 0;
+            int yleft_index = 0;
+            int yright_index = 0;
             int xright_index = 0;
             int zright_index = 0;
             
             for(int i = 0; i < py.length; i++) {
-
-                if(v.point.y > px[i].y) {
+                
+                if(v.point.y >= px[i].y) {
                     x_left[xleft_index] = px[i];
                     xleft_index++;
-                } else if(v.point.y < px[i].y) {
+                } else {
                     x_right[xright_index] = px[i];
                     xright_index++;
                 }
                
                 
-//                if(v.point.y > py[i].y) {
-//                    y_left[yleft_index] = py[i];
-//                    yleft_index++;
-//                } else {
-//                    y_right[yright_index] = py[i];
-//                    yright_index++;
-//                }
+                if(v.point.y >= py[i].y) {
+                    y_left[yleft_index] = py[i];
+                    yleft_index++;
+                } else {
+                    y_right[yright_index] = py[i];
+                    yright_index++;
+                }
                 
-                if(v.point.y > pz[i].y) {
+                if(v.point.y >= pz[i].y) {
                     z_left[zleft_index] = pz[i];
                     zleft_index++;
-                } else if(v.point.y < pz[i].y){
+                } else {
                     z_right[zright_index] = pz[i];
                     zright_index++;
                 }
             }
-            mergeSort(x_left, x_left.length, 0);
-            mergeSort(x_right, x_right.length, 0);
-            mergeSort(y_left, y_left.length, 1);
-            mergeSort(y_right, y_right.length, 1);            
-            mergeSort(z_left, z_left.length, 2);
-            mergeSort(z_right, z_right.length, 2);
+            v.setP(py);
             v.left = buildTree(x_left, y_left, z_left, depth + 1);
             v.right = buildTree(x_right, y_right, z_right, depth + 1);
             return v;
         }
         else {
             
-            Node v = new Node(new Point(pz[mid].x, pz[mid].y, pz[mid].z));
+            Node v = new Node(new Point(pz[mid_i].x, pz[mid_i].y, pz[mid_i].z), depth);
             
             int xleft_index = 0; 
             int yleft_index = 0;
             int xright_index = 0;
             int yright_index = 0;
+            int zright_index = 0;
+            int zleft_index = 0;
             
             for(int i = 0; i < pz.length; i++) {
 
-                if(v.point.z > px[i].z) {
+                if(v.point.z >= px[i].z) {
                     x_left[xleft_index] = px[i];
                     xleft_index++;
-                } else if(v.point.z > px[i].z){
+                } else {
                     x_right[xright_index] = px[i];
                     xright_index++;
                 }
                 
-                if(v.point.z > py[i].z) {
+                if(v.point.z >= py[i].z) {
                     y_left[yleft_index] = py[i];
                     yleft_index++;
-                } else if(v.point.z < py[i].z) {
+                } else  {
                     y_right[yright_index] = py[i];
                     yright_index++;
                 }
                 
-//                if(v.point.z > pz[i].z) {
-//                    z_left[zleft_index] = pz[i];
-//                    zleft_index++;
-//                } else {
-//                    z_right[zright_index] = pz[i];
-//                    zright_index++;
-//                }
+                if(v.point.z >= pz[i].z) {
+                    z_left[zleft_index] = pz[i];
+                    zleft_index++;
+                } else {
+                    z_right[zright_index] = pz[i];
+                    zright_index++;
+                }
             }
-            mergeSort(x_left, x_left.length, 0);
-            mergeSort(x_right, x_right.length, 0);
-            mergeSort(y_left, y_left.length, 1);
-            mergeSort(y_right, y_right.length, 1);            
-            mergeSort(z_left, z_left.length, 2);
-            mergeSort(z_right, z_right.length, 2);
-            
+            v.setP(pz);
             v.left = buildTree(x_left, y_left, z_left, depth + 1);
             v.right = buildTree(x_right, y_right, z_right, depth + 1);
             return v;
@@ -290,4 +300,28 @@ public class KDTreev2 {
         int n = coords_arr.length;
         return coords_arr[(n / 2) - 1]; 
     }
+    
+    
+    public int rangeCount(Prism R, Node v, Prism cell) {
+        if(v == null) {
+            return 0;
+        }
+        else if(R.isDisjoint(cell, 0)) {
+            return 0;
+        }
+        else if(R.contains(cell, 0)) {
+            return v.p.length;
+        }
+        else {
+            int count = 0;
+            if (R.contains(v.point, count) && v.isLeaf()) // consider this point
+                count += 1;
+            count += rangeCount(R, v.left, cell.leftPart(v.depth, v.point));
+            count += rangeCount(R, v.right, cell.rightPart(v.depth, v.point));
+            return count;
+        }
+        
+        
+    }
+    
 }
