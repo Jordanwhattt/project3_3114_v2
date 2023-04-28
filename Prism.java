@@ -21,15 +21,15 @@ public class Prism {
      * @return
      */
     // if low[i] ≤ q[i] ≤ high[i], for 0 ≤ i ≤ d − 1 
-    public boolean contains(Point q , int cd ) {
+    public boolean contains(Point q ) {
         int qx = q.x;
         int qy = q.y;
         int qz = q.z;
         //If the lowest x value in this rectangle is greater than the x value of point q, then its definitely not inside the triangle.
         //This works for each dimension and the max dimension of this rectangle  
     
-        if(this.plow.x <= qx & this.plow.y <= qy & this.plow.z <= qz &
-            this.phigh.x >= qx & this.phigh.y >= qy & this.phigh.z >= qz) {
+        if(this.plow.x <= qx && this.plow.y <= qy && this.plow.z <= qz &&
+            this.phigh.x >= qx && this.phigh.y >= qy && this.phigh.z >= qz) {
             return true;
         }
         
@@ -65,9 +65,9 @@ public class Prism {
     
     //c.low[i], c.high[i] ⊆ low[i], high[i], for all 0 ≤ i ≤ d − 1.
 
-    public boolean contains(Prism c, int cd) {
+    public boolean contains(Prism c) {
         
-        if(this.contains(c.plow, cd) && this.contains(c.phigh, cd)) {
+        if(this.contains(c.plow) && this.contains(c.phigh)) {
             return true;
         }
         
@@ -77,7 +77,7 @@ public class Prism {
     
     // r.high[i] < c.low[i] or r.low[i] > c.high[i], for any 0 ≤ i ≤ d − 1.
     public boolean isDisjoint(Prism c ,int cd ) { 
-        if(this.contains(c, cd) ) {
+        if(this.contains(c) ) {
             return false;
         }
         

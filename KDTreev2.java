@@ -265,17 +265,17 @@ public class KDTreev2 {
         if(!range.intersects(v.point)) {
             return 0;
         }
-        else if(range.contains(region(v), v.depth)){
+        else if(range.contains(region(v))){
             return v.px.length;
         }
         
-        if(range.contains(v.point, v.depth)) {
+        if(range.contains(v.point) && v.isLeaf()) {
             qc++;
         }
         
         if(v.depth % 3 == 0 && !v.isLeaf()) {
             
-            if(range.plow != null && range.plow.x < v.point.x) {
+            if(range.plow != null && range.plow.x <= v.point.x) {
                 qc += searchKdTree(v.left, range);
             }
             if(range.phigh != null && range.phigh.x > v.point.x) {
@@ -284,7 +284,7 @@ public class KDTreev2 {
         }
 
         if(v.depth % 3 == 1 && !v.isLeaf()) {
-            if(range.plow != null && range.plow.y < v.point.y) {
+            if(range.plow != null && range.plow.y <= v.point.y) {
                 qc += searchKdTree(v.left, range);
             }
             if(range.phigh != null && range.phigh.y > v.point.y) {
@@ -292,7 +292,7 @@ public class KDTreev2 {
             }
         }
         if(v.depth % 3 == 2 && !v.isLeaf()) {
-            if(range.plow != null && range.plow.z < v.point.z) {
+            if(range.plow != null && range.plow.z <= v.point.z) {
                 qc += searchKdTree(v.left, range);
             }
             if(range.phigh != null && range.phigh.z > v.point.z) {
@@ -304,34 +304,7 @@ public class KDTreev2 {
 
         return qc;
         
-//        if (v.isLeaf()) {
-//            if (range.contains(v.point, v.depth) && !v.visited) {
-//                v.visited = true;
-//                return query_count++;
-//            }
-//            return 0;
-//        }
-//        else {
-//            v.visited = true;
-//            if (range.contains(region(v.left), v.depth++)) {
-//                return query_count += v.left.px.length;//report subtreee. 
-//                //The length of the points array tells us how many leaves are in that subtree
-//            }
-//            // todo
-//            else if (range.intersects(v.left.point)) {
-//                query_count += searchKdTree(v.left, range);
-//            }
-//            // todo
-//            if (range.contains(region(v.right), v.depth++)) {
-//                return query_count += v.right.px.length; //report subtreee. 
-//                //The length of the points array tells us how many leaves are in that subtree
-//            }
-//            // todo
-//            else if (range.intersects(v.right.point)) {
-//                query_count += searchKdTree(v.right, range);
-//            }
 
-//        }
     }
     
     
