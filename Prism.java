@@ -26,33 +26,28 @@ public class Prism {
         int qy = q.getY();
         int qz = q.getZ();
         //If the lowest x value in this rectangle is greater than the x value of point q, then its definitely not inside the triangle.
-        //This works for each dimension and the max dimension of this rectangle
-        
-        
-        
+        //This works for each dimension and the max dimension of this rectangle  
+    
 //        if(this.plow.getX() <= qx & this.plow.getY() <= qy & this.plow.getZ() <= qz &
 //            this.phigh.getX() >= qx & this.phigh.getY() >= qy & this.phigh.getZ() >= qz) {
 //            return true;
 //        }
-//        
         
-        
-
-        if(cd == 0 % 3) {
-            if(this.plow.getX() <= qx & this.plow.getY() <= qy &
+        if(cd % 3 == 0) {
+            if(this.plow.getX() <= qx && this.plow.getY() <= qy &&
                 this.phigh.getX() >= qx & this.phigh.getY() >= qy) {
                 return true;
             } 
         }
-        else if(cd == 1 % 3) {
-            if(this.plow.getY() <= qy & this.plow.getZ() <= qz &
-                this.phigh.getY() >= qy & this.phigh.getZ() >= qz) {
+        else if(cd % 3 == 1) {
+            if(this.plow.getY() <= qy && this.plow.getZ() <= qz &&
+                this.phigh.getY() >= qy && this.phigh.getZ() >= qz) {
                 return true;
             } 
         }
-        else if(cd == 0 % 3) {
-            if(this.plow.getX() <= qx & this.plow.getZ() <= qz &
-                this.phigh.getZ() >= qx & this.phigh.getZ() >= qz) {
+        else if(cd % 3 == 2) {
+            if(this.plow.getX() <= qx && this.plow.getZ() <= qz &&
+                this.phigh.getZ() >= qx && this.phigh.getZ() >= qz) {
                 return true;
             } 
         }
@@ -72,7 +67,7 @@ public class Prism {
 
     public boolean contains(Prism c, int cd) {
         
-        if(this.contains(c.plow, cd) & this.contains(c.phigh, cd)) {
+        if(this.contains(c.plow, cd) && this.contains(c.phigh, cd)) {
             return true;
         }
         
@@ -86,28 +81,28 @@ public class Prism {
             return false;
         }
         
-        if( ((this.phigh.getX() < c.plow.getX()) || (this.plow.getX() > c.phigh.getX())) ||
-            ((this.phigh.getY() < c.plow.getY()) || (this.plow.getY() > c.phigh.getY())) || 
-            ((this.phigh.getZ() < c.plow.getZ()) || (this.plow.getZ() > c.phigh.getZ())) ) {
-            return true;
-        }
+//        if( ((this.phigh.getX() < c.plow.getX()) || (this.plow.getX() > c.phigh.getX())) ||
+//            ((this.phigh.getY() < c.plow.getY()) || (this.plow.getY() > c.phigh.getY())) || 
+//            ((this.phigh.getZ() < c.plow.getZ()) || (this.plow.getZ() > c.phigh.getZ())) ) {
+//            return true;
+//        }
         
       
-        if(cd == 0 % 3) {
-            if( ((this.phigh.getX() < c.plow.getX()) | (this.plow.getX() > c.phigh.getX())) |
-                ((this.phigh.getY() < c.plow.getY()) | (this.plow.getY() > c.phigh.getY())) ) {
+        if(cd % 3 == 0) {
+            if( ((this.phigh.getX() < c.plow.getX()) || (this.plow.getX() > c.phigh.getX())) ||
+                ((this.phigh.getY() < c.plow.getY()) || (this.plow.getY() > c.phigh.getY())) ) {
                 return true;
             }
         }
-        else if(cd == 0 % 3) {
-            if( ((this.phigh.getY() < c.plow.getY()) | (this.plow.getY() > c.phigh.getY())) |
-                ((this.phigh.getZ() < c.plow.getZ()) | (this.plow.getZ() > c.phigh.getZ())) ) {
+        else if(cd % 3 == 1) {
+            if( ((this.phigh.getY() < c.plow.getY()) || (this.plow.getY() > c.phigh.getY())) ||
+                ((this.phigh.getZ() < c.plow.getZ()) || (this.plow.getZ() > c.phigh.getZ())) ) {
                 return true;
             }
         } else {
-            if(cd == 0) {
-                if( ((this.phigh.getX() < c.plow.getX()) | (this.plow.getX() > c.phigh.getX())) |
-                    ((this.phigh.getZ() < c.plow.getZ()) | (this.plow.getZ() > c.phigh.getZ())) ) {
+            if(cd % 3 == 2) {
+                if( ((this.phigh.getX() < c.plow.getX()) || (this.plow.getX() > c.phigh.getX())) ||
+                    ((this.phigh.getZ() < c.plow.getZ()) || (this.plow.getZ() > c.phigh.getZ())) ) {
                     return true;
                 }
             }
@@ -146,4 +141,6 @@ public class Prism {
             return new Prism(new_plow, this.phigh);
         }
     }
+
+   
 }

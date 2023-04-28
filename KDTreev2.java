@@ -7,6 +7,7 @@ import java.util.Comparator;
 public class KDTreev2 {
     
     Node root;
+    int query_count;
 
     public KDTreev2(Point[] points) {
         
@@ -306,21 +307,53 @@ public class KDTreev2 {
         if(v == null) {
             return 0;
         }
-        else if(R.isDisjoint(cell, 0)) {
+        else if(R.isDisjoint(cell, v.depth)) {
             return 0;
         }
-        else if(R.contains(cell, 0)) {
+        else if(R.contains(cell, v.depth)) {
             return v.p.length;
         }
         else {
             int count = 0;
             if (R.contains(v.point, count) && v.isLeaf()) // consider this point
                 count += 1;
-            count += rangeCount(R, v.left, cell.leftPart(v.depth, v.point));
-            count += rangeCount(R, v.right, cell.rightPart(v.depth, v.point));
+            count += rangeCount(R, v.left, cell.leftPart(v.depth + 1, v.point));
+            count += rangeCount(R, v.right, cell.rightPart(v.depth + 1, v.point));
             return count;
         }
         
+        
+    }
+    
+    
+    
+    public int searchKdTree(Node v, Prism range) {
+        query_count = 0;
+        if(v.isLeaf()) {
+            return query_count++;
+        }
+        if(range.contains(v.left.point, this.root.depth++)) {
+            return query_count += v.p.length;
+        }
+        //todo
+//        else if(range.intersects(v.left.point, this.root.depth++)) {
+//            searchKdTree(v.left, range);
+//        }
+        if(range.contains(v.right.point, this.root.depth++)) {
+            return query_count += v.p.length;
+        }
+        //todo
+//        else if(range.intersects(v.right.point, this.root.depth++)) {
+//            searchKdTree(v.right, range);
+//        }
+        return query_count;
+    }
+    
+    
+    
+    
+    
+    public void reportSubtree(Node v, Prism range) {
         
     }
     

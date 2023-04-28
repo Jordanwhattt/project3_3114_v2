@@ -116,9 +116,11 @@ public class RangeSearch {
 
         Prism bounding_box = new Prism(min_point, max_point); // ???????? IDK
                                                               // how to get this
-        return kdtree1.rangeCount(queryRange, kdtree1.root, bounding_box);
+        return kdtree1.searchKdTree(kdtree1.root, queryRange);
         
     }
+    
+
 
 
     /**
