@@ -28,7 +28,7 @@ public class RangeSearch {
     BST x_tree;
     public Node root;
     private int n;
-    public KDTreev2 kdtree1;
+    public KDTree kdtree1;
 
     /**
      * The constructor of the class
@@ -68,15 +68,11 @@ public class RangeSearch {
         }
         
         //1-D Trees
-        x_tree = new BST(0); //Sorted by x coordinates
-        BST y_tree = new BST(1);
-        BST z_tree = new BST(2);
-        x_tree.root = x_tree.buildTree(Px); //Builds a 1-d Binary search tree sorted by the X coordinates
+        x_tree = new BST(); //Sorted by x coordinates
+        x_tree.root = x_tree.buildTree(Pz); //Builds a 1-d Binary search tree sorted by the X coordinates
+
         
-        y_tree.root = y_tree.buildTree(Py);
-        z_tree.root = z_tree.buildTree(Pz);
-        
-        kdtree1 = new KDTreev2(Px);
+        kdtree1 = new KDTree(Px);
     }
         
         

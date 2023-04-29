@@ -28,29 +28,12 @@ public class Prism {
         //If the lowest x value in this rectangle is greater than the x value of point q, then its definitely not inside the triangle.
         //This works for each dimension and the max dimension of this rectangle  
     
-        if(this.plow.x <= qx && this.plow.y <= qy && this.plow.z <= qz &&
-            this.phigh.x >= qx && this.phigh.y >= qy && this.phigh.z >= qz) {
+        if(this.plow.x <= qx && this.plow.y <= qy && /*this.plow.z <= qz &&*/
+            this.phigh.x >= qx && this.phigh.y >= qy /*&& this.phigh.z >= qz*/) {
             return true;
         }
         
-//        if(cd % 3 == 0) {
-//            if(this.plow.x <= qx && this.plow.y <= qy &&
-//                this.phigh.x >= qx & this.phigh.y >= qy) {
-//                return true;
-//            } 
-//        }
-//        else if(cd % 3 == 1) {
-//            if(this.plow.y <= qy && this.plow.z <= qz &&
-//                this.phigh.y >= qy && this.phigh.z >= qz) {
-//                return true;
-//            } 
-//        }
-//        else if(cd % 3 == 2) {
-//            if(this.plow.x <= qx && this.plow.z <= qz &&
-//                this.phigh.z >= qx && this.phigh.z >= qz) {
-//                return true;
-//            } 
-//        }
+
         
         return false;
     }
@@ -75,77 +58,13 @@ public class Prism {
     }
     
     
-    // r.high[i] < c.low[i] or r.low[i] > c.high[i], for any 0 ≤ i ≤ d − 1.
-    public boolean isDisjoint(Prism c ,int cd ) { 
-        if(this.contains(c) ) {
-            return false;
-        }
-        
-        if( ((this.phigh.x < c.plow.x) || (this.plow.x > c.phigh.x)) ||
-            ((this.phigh.y < c.plow.y) || (this.plow.y > c.phigh.y)) || 
-            ((this.phigh.z < c.plow.z) || (this.plow.z > c.phigh.z)) ) {
-            return true;
-        }
-        
-      
-//        if(cd % 3 == 0) {
-//            if( ((this.phigh.x < c.plow.x) || (this.plow.x > c.phigh.x)) ||
-//                ((this.phigh.y < c.plow.y) || (this.plow.y > c.phigh.y)) ) {
-//                return true;
-//            }
-//        }
-//        else if(cd % 3 == 1) {
-//            if( ((this.phigh.y < c.plow.y) || (this.plow.y > c.phigh.y)) ||
-//                ((this.phigh.z < c.plow.z) || (this.plow.z > c.phigh.z)) ) {
-//                return true;
-//            }
-//        } else {
-//            if(cd % 3 == 2) {
-//                if( ((this.phigh.x < c.plow.x) || (this.plow.x > c.phigh.x)) ||
-//                    ((this.phigh.z < c.plow.z) || (this.plow.z > c.phigh.z)) ) {
-//                    return true;
-//                }
-//            }
-//        }
-        
-        
-        return false;
-    }
-    
-    
-    public Prism leftPart(int cd, Point s) {
-        Point new_phigh;
-        if(cd % 3 == 0) {
-           new_phigh = new Point(s.x, this.phigh.y, this.phigh.z);
-           return new Prism(this.plow, new_phigh);
-        } else if( cd % 3 == 1) {
-            new_phigh = new Point(this.phigh.x, s.y, this.phigh.z);
-            return new Prism(this.plow, new_phigh);
-        } else {
-            new_phigh = new Point(this.phigh.x, this.phigh.y, s.z);
-            return new Prism(this.plow, new_phigh);
-        }
-    }
-    
-    
-    public Prism rightPart(int cd, Point s) {
-        Point new_plow;
-        if(cd % 3 == 0) {
-            new_plow = new Point(s.x, this.phigh.y, this.phigh.z);
-            return new Prism(new_plow, this.phigh);
-        } else if( cd % 3 == 1) {
-            new_plow = new Point(this.phigh.x, s.y, this.phigh.y);
-            return new Prism(new_plow, this.phigh);
-        } else {
-            new_plow = new Point(this.phigh.x, this.phigh.y, s.z);
-            return new Prism(new_plow, this.phigh);
-        }
-    }
 
-    public boolean intersects(Point p ) {
-        if((this.plow.x <= p.x && p.x <= this.phigh.x )||
-            (this.plow.y <= p.y && p.y <= this.phigh.y ) ||
-            (this.plow.z <= p.z && p.z <= this.phigh.z )) {
+
+
+    public boolean intersects(KDNode v ) {
+        if((this.plow.x <= v.point.x && v.point.x <= this.phigh.x )||
+            (this.plow.y <= v.point.y && v.point.y <= this.phigh.y ) /*||
+            (this.plow.z <= v.point.z && v.point.z <= this.phigh.z )*/) {
             return true;
         }
         return false;

@@ -5,22 +5,15 @@ import java.util.Arrays;
 public class BST {
     
     public Node root;
-    public int type;
     public int count;
     
     //1D Range Tree
     public BST() {
         root = null;
-        this.type = 1;
         this.count = 0;
     }
     
-    
-    public BST(int type) {
-        root = null;
-        this.type = type;
-    }
-    
+
     /**
      * 
      * @param points
@@ -35,25 +28,36 @@ public class BST {
             Node v = new Node(points[0]); //Createa leaf node storing this point and make it 
             return v;
         }
-        
-        Point[] p_left;
-        Point[] p_right;
-        Point mid;
-        
-        int median_index = n / 2;
-        
-        
-        p_left = Arrays.copyOfRange(points, 0, median_index);
-        p_right = Arrays.copyOfRange(points, median_index, n);
 
+        int l_length = 0;
+        int mid_i =0;
+        if(n % 2 == 0) {
+            l_length = n / 2;
+            mid_i = l_length - 1;
+        }
+        else {
+            mid_i = n/2;
+            l_length = mid_i + 1;
+        }
 
-        Node v = new Node(points[median_index-1]);
+        
+        Point[] z_left = new Point[l_length];
+        Point[] z_right = new Point[n - l_length];
+
+        for(int i = 0; i < l_length; i++) {
+            z_left[i] = points[i];
+        }
+        for(int i =0; i < n-l_length;i++) {
+            z_right[i] = points[i + l_length];
+        }
+
+        Node v = new Node(points[mid_i]);
         //v.setPy(points);
 
         //5. build v_left
-        Node v_left = this.buildTree(p_left);
+        Node v_left = this.buildTree(z_left);
         //6. build v_right
-        Node v_right = this.buildTree(p_right);
+        Node v_right = this.buildTree(z_right);
         
         //Make v_left the left child of v
         v.left = v_left;
@@ -70,25 +74,28 @@ public class BST {
      * @param max
      * @return
      */
-    public int RangeQuery1D(int min, int max, int type) {
+    public int RangeQuery1D(int min, int max) {
         
         Node v_split = findSplitNode(this, min, max);
         int split_value;
         int v_value;
-        if(v_split.isLeaf()) { //Base Case 1
+        if(v_split == null) {
+            return 0;
+        }
+        else if(v_split.isLeaf()) { //Base Case 1
             
-            split_value = returnSplitValue(v_split, type);
+            split_value = returnSplitValue(v_split);
             
-            if(split_value >= min & split_value <= max) {
+            if(split_value >= min && split_value <= max) {
                 count++; //Report point
             }
             
         } else { //Case 2: Not a leaf
             Node v = v_split.left;
-            v_value = returnSplitValue(v, type);
+            v_value = returnSplitValue(v);
             
             while(!v.isLeaf()) {
-                v_value = returnSplitValue(v, type);
+                v_value = returnSplitValue(v);
                 if(min <= v_value) {
                     reportSubtree(v.right, min, max);
                     v = v.left;
@@ -105,7 +112,7 @@ public class BST {
             
             v = v_split.right;
             while(!v.isLeaf()) {
-                split_value = returnSplitValue(v, type);
+                split_value = returnSplitValue(v);
                 
                 if(max >= split_value) {
                     reportSubtree(v.left, min, max);
@@ -125,25 +132,17 @@ public class BST {
     }
     
     
-    private int returnSplitValue(Node v_split, int type2) {
-        int split_value;
-        if(type == 0 % 3) {
-            split_value = v_split.point.getX();
-        }
-        else if(type == 1 % 3) {
-            split_value = v_split.point.getY();
-        }
-        else  {
-            split_value = v_split.point.getZ();
-        }
-        return split_value;
+    private int returnSplitValue(Node v_split) {
+       
+        return  v_split.point.z;
+        
     }
 
 
     public Node findSplitNode(BST tree, int min, int max) {
         Node v = this.root;
-        while(!v.isLeaf() & (max <= v.point.getX() | min >= v.point.getX())) {
-            if(max <= v.point.getX()) {
+        while(v != null && !v.isLeaf() && (max <= v.point.z | min >= v.point.z)) {
+            if(max <= v.point.getZ()) {
                 v = v.left;
             } else {
                 v = v.right;
@@ -157,7 +156,7 @@ public class BST {
     
     public void reportSubtree(Node v, int min, int max) {
         if(v.isLeaf()) {
-            if(v.point.getX() >= min & v.point.getX() <= max) {
+            if(v.point.getZ() >= min && v.point.getZ() <= max) {
                 count++; //Report point
             }
         } else {
