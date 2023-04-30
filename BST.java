@@ -5,12 +5,10 @@ import java.util.Arrays;
 public class BST {
     
     public Node root;
-    public int count;
     
     //1D Range Tree
     public BST() {
         root = null;
-        this.count = 0;
     }
     
 
@@ -76,28 +74,30 @@ public class BST {
      */
     public int RangeQuery1D(int min, int max) {
         int count = 0;
-        Node v_split = this.findSplitNode(min, max);
+        Node v_split = this.root;
+        v_split = findSplitNode(v_split, min, max);
         int split_value;
         int v_value;
+        
         if(v_split == null) {
             return 0;
         }
-        else if(this.root.isLeaf()) { //Base Case 1
+        else if(v_split.isLeaf()) { //Base Case 1
             
             split_value = returnSplitValue(v_split);
             
-            if(this.root.point.z >= min && this.root.point.z <= max) {
+            if(v_split.point.z >= min && v_split.point.z <= max) {
                 count++; //Report point
             }
             
         } else { //Case 2: Not a leaf
-            Node v = this.root.left;
+            Node v = v_split.left;
             v_value = returnSplitValue(v);
             
             while(!v.isLeaf()) {
                 v_value = returnSplitValue(v);
                 if(min <= v_value) {
-                    reportSubtree(v.right, min, max);
+                    count += reportSubtree(v.right, min, max);
                     v = v.left;
                 }
                 else {
@@ -105,24 +105,23 @@ public class BST {
                 }
             }
             
-            if(v_value >= min & v_value <= max) {
+            if(v_value >= min && v_value <= max) {
                 count++; //Report point
             }
-            
-            
-            v = this.root.right;
+
+            v = v_split.right;
             while(!v.isLeaf()) {
                 split_value = returnSplitValue(v);
                 
                 if(max >= split_value) {
-                    reportSubtree(v.left, min, max);
+                    count += reportSubtree(v.left, min, max);
                     v = v.right;
                 } 
                 else {
                     v = v.left;
                 }
             }
-            if(v_value >= min & v_value <= max) {
+            if(v_value >= min && v_value <= max) {
                 count++; //Report point
             }
         }
@@ -139,9 +138,8 @@ public class BST {
     }
 
 
-    public Node findSplitNode(int min, int max) {
-        Node v = this.root;
-        while(v != null && !v.isLeaf() && (max <= v.point.z | min >= v.point.z)) {
+    public Node findSplitNode(Node v, int min, int max) {
+        while(!v.isLeaf() && (max <= v.point.z || min >= v.point.z)) {
             if(max <= v.point.z) {
                 v = v.left;
             } else {
@@ -154,14 +152,16 @@ public class BST {
 
     
     
-    public void reportSubtree(Node v, int min, int max) {
+    public int reportSubtree(Node v, int min, int max) {
+        int count1 = 0;
         if(v.isLeaf()) {
             if(v.point.z >= min && v.point.z <= max) {
-                count++; //Report point
+                count1++; //Report point
             }
         } else {
-            reportSubtree(v.left, min, max);
-            reportSubtree(v.right, min, max);
+            count1 += reportSubtree(v.left, min, max);
+            count1 += reportSubtree(v.right, min, max);
         }
+        return count1;
     }
 }

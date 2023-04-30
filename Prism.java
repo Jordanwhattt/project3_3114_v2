@@ -37,7 +37,7 @@ public class Prism {
         
         return false;
     }
-    
+
     
     /**
      * This checks if a rectangle C is inside the entirety of this Rectangle.
@@ -48,11 +48,15 @@ public class Prism {
     
     //c.low[i], c.high[i] ⊆ low[i], high[i], for all 0 ≤ i ≤ d − 1.
 
-    public boolean contains(Prism c) {
+    public boolean contains2d(Prism c) {
         
         if(this.contains(c.plow) && this.contains(c.phigh)) {
             return true;
         }
+//        if(this.plow.x <= c.plow.x && this.plow.y <= c.plow.y &&
+//            this.phigh.x >= c.phigh.x && this.phigh.y >= c.phigh.y) {
+//            return true;
+//        }
         
         return false;
     }
@@ -61,16 +65,33 @@ public class Prism {
 
 
 
-    public boolean intersects(KDNode v ) {
-        if((this.plow.x <= v.point.x && v.point.x <= this.phigh.x )||
-            (this.plow.y <= v.point.y && v.point.y <= this.phigh.y ) ||
-            (this.plow.z <= v.point.z && v.point.z <= this.phigh.z )) {
+    public boolean intersects(Point point) {
+//        if((this.plow.x <= point.x && point.x <= this.phigh.x )||
+//            (this.plow.y <= point.y && point.y <= this.phigh.y ) ||
+//            (this.plow.z <= point.z && point.z <= this.phigh.z )) {
+//            return true;
+//        }
+      if(this.plow.x <= plow.x && this.plow.y <= plow.y &&
+          this.phigh.x >= phigh.x && this.phigh.y >= phigh.y) {
+          return true;
+      }
+        
+        return false;
+        
+    }
+    
+    public boolean intersects2(Prism c) {
+        
+        if(this.intersects(c.plow) || this.intersects(c.phigh)) {
             return true;
         }
-        return false;
         
+//        if(this.plow.x <= c.plow.x && this.plow.y <= c.plow.y &&
+//            this.phigh.x >= c.phigh.x && this.phigh.y >= c.phigh.y) {
+//            return true;
+//        }
+        
+        return false;
     }
-    
-    
     
 }

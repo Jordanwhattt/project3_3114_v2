@@ -9,7 +9,7 @@ public class KDTree {
     public KDNode root;
 
 
-    public int query_count;
+
     int dimension = 2;
 
     public KDTree(Point[] points) {
@@ -40,7 +40,7 @@ public class KDTree {
     public KDNode buildTree(Point[] px, Point[] py, Point[] pz, int depth) {
 
         int n = px.length;
-        int axis = depth % dimension;
+        int axis = depth % this.dimension;
         
         if(n == 0) {
             return null;
@@ -222,12 +222,13 @@ public class KDTree {
         int qc=0;
         //If range is not in the region of this node.
         //
-        if(!range.intersects(v)) {
+        if(!range.intersects2(region(v))) {
             return 0;
         }
-        else if(range.contains(region(v))){
-            
-            return v.z_tree.RangeQuery1D(v.pz[0].z, v.pz[v.pz.length-1].z);
+        
+
+        else if(range.contains2d(region(v))){
+            return v.z_tree.RangeQuery1D(range.plow.z, range.phigh.z);
         }
         
         if(range.contains(v.point) && v.isLeaf()) {
@@ -273,93 +274,17 @@ public class KDTree {
     }
 
     
-    
-    
-    public int returnSplitValue(KDNode v_split) {
-        int split_value;
-        if(v_split.depth % this.dimension == 0) {
-            split_value = v_split.point.getX();
-        }
-        else {
-            split_value = v_split.point.getY();
-        }
-        
-        return split_value;
-    }
+
 
 
     
     
     
     
-    
-    /**
-     * 1D range query helper methods
-     * @param v
-     * @param range
-     * @return
-     */
-    public KDNode findSplitNode(KDNode v, Prism range) {
-        Point min = range.plow;
-        Point max = range.phigh;
-        if(v.depth % this.dimension == 0) {
-            while(!v.isLeaf() && (max.x <= v.point.x | min.x >= v.point.x)) {
-                if(max.x <= v.point.x) {
-                    v = v.left;
-                } else {
-                    v = v.right;
-                }
-            }
-        }
-        else {
-            while(!v.isLeaf() && (max.y <= v.point.y | min.y >= v.point.y)) {
-                if(max.y <= v.point.y) {
-                    v = v.left;
-                } else {
-                    v = v.right;
-                }
-            }
-        }
-//        else {
-//            while(!v.isLeaf() && (max.z <= v.point.z | min.z >= v.point.z)) {
-//                if(max.z <= v.point.z) {
-//                    v = v.left;
-//                } else {
-//                    v = v.right;
-//                }
-//            }
-//        }
-        
-        return v;
-    }
-    
+
 
     
     
-    public void reportSubtree(KDNode v, Prism range) {
-        Point min = range.plow;
-        Point max = range.phigh;
-        if(v.isLeaf()) {
-            if(v.depth % this.dimension == 0 ) {
-                if(v.point.x >= min.x & v.point.x <= max.x) {
-                    query_count++; //Report point
-                }
-            }
-            else {
-                if(v.point.y >= min.y & v.point.y <= max.y) {
-                    query_count++; //Report point
-                }
-            }
-//            if (v.depth % 3 == 2) {
-//                if(v.point.z >= min.z & v.point.z <= max.z) {
-//                    query_count++; //Report point
-//                }
-//            }
-            
-        } else {
-            reportSubtree(v.left, range);
-            reportSubtree(v.right, range);
-        }
-    }
+ 
     
 }
