@@ -28,8 +28,8 @@ public class Prism {
         //If the lowest x value in this rectangle is greater than the x value of point q, then its definitely not inside the triangle.
         //This works for each dimension and the max dimension of this rectangle  
     
-        if(this.plow.x <= qx && this.plow.y <= qy && /*this.plow.z <= qz &&*/
-            this.phigh.x >= qx && this.phigh.y >= qy /*&& this.phigh.z >= qz*/) {
+        if(this.plow.x <= qx && this.plow.y <= qy &&  this.plow.z <= qz &&
+            this.phigh.x >= qx && this.phigh.y >= qy && this.phigh.z >= qz) {
             return true;
         }
         
@@ -63,8 +63,8 @@ public class Prism {
 
     public boolean intersects(KDNode v ) {
         if((this.plow.x <= v.point.x && v.point.x <= this.phigh.x )||
-            (this.plow.y <= v.point.y && v.point.y <= this.phigh.y ) /*||
-            (this.plow.z <= v.point.z && v.point.z <= this.phigh.z )*/) {
+            (this.plow.y <= v.point.y && v.point.y <= this.phigh.y ) ||
+            (this.plow.z <= v.point.z && v.point.z <= this.phigh.z )) {
             return true;
         }
         return false;

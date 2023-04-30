@@ -24,7 +24,7 @@ public class KDNode {
         this.visited = false;
         this.depth = depth;
         this.z_tree = ztree;
-    }
+    } 
     
     
     public boolean isLeaf() {
